@@ -198,6 +198,11 @@
   .solvebtn:active{transform:translateY(1px);}
   .solvemsg{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;}
   .solvemsg b{color:var(--emerald);}
+  .realbar{padding:11px 26px;border-bottom:1px solid var(--line);font-size:13.5px;background:var(--brass-soft);}
+  .realbar label{cursor:pointer;}
+  .realbar input{width:16px;height:16px;vertical-align:-2px;accent-color:var(--brass);cursor:pointer;}
+  .realbar .realnote{color:var(--muted);}
+  .realon .n, .realon td{color:var(--warn)!important;}
   .annuityline{padding:12px 26px;font-size:13.5px;background:var(--b1-bg);border-bottom:1px solid var(--line);color:var(--ink);}
   .annuityline b{color:var(--b1);}
   .annuityline span{color:var(--muted);}
@@ -576,6 +581,25 @@
       </tbody>
     </table></div>
     <div class="callout"><b>The core tax insight:</b> ₹1L/month = ₹12L/yr. Split across two people under the New Regime, the interest base-load can sit almost entirely in nil/low-tax bands, while the equity-SWP top-up is taxed only on its gain slice — sheltered further by two ₹1.25L LTCG exemptions. Blended, a couple can keep <b>effective tax in the low single digits</b>, so ₹1L <em>net</em> needs only ~₹1.05–1.10L gross, not ₹1.3L+. <b>Caveat:</b> the New Regime's ₹60k rebate never offsets LTCG/STCG special-rate tax — plan those separately. The new <b>Income-tax Act 2025</b> (in force 1 Apr 2026) may re-number these sections; substance is unchanged — confirm labels with your CA.</div>
+
+    <h3 style="font-size:19px;margin:38px 0 12px;">Quick tax estimator — Old vs New regime</h3>
+    <div class="simple"><span class="ic">🟢</span><p><b>In simple terms:</b> Enter your yearly income by type and see roughly what tax the couple pays — and which regime is cheaper. The big lever is <b>splitting income across both spouses</b>, so each uses their own tax-free allowance. This is a rough estimate for senior citizens under FY2026-27 rules, <em>not</em> a tax filing — confirm with a CA.</p></div>
+    <div class="calc">
+      <p class="calctip">✎ <b>Type or drag.</b> Amounts are per year, for the whole couple.</p>
+      <div class="controls">
+        <div class="ctrl"><label>Interest income / year <span class="valwrap">₹<input type="number" class="numin" id="txInt_n" min="0" max="50" step="1" value="14"><span class="u">L</span></span></label>
+          <input type="range" id="txInt" min="0" max="50" step="1" value="14"><div class="hint">SCSS, FD, POMIS, bonds — taxed like a salary</div></div>
+        <div class="ctrl"><label>Equity LTCG realised / year <span class="valwrap">₹<input type="number" class="numin" id="txLtcg_n" min="0" max="30" step="1" value="3"><span class="u">L</span></span></label>
+          <input type="range" id="txLtcg" min="0" max="30" step="1" value="3"><div class="hint">The gain slice of your equity-fund SWP</div></div>
+      </div>
+      <div class="realbar"><label><input type="checkbox" id="txSplit" checked> <b>Split income equally across both spouses</b></label> <span class="realnote">— uncheck to see the tax if it all sits with one person</span></div>
+      <div class="verdict" style="grid-template-columns:1fr 1fr;">
+        <div class="v"><span class="l">New Regime · total tax/yr</span><span class="n" id="txNew">—</span></div>
+        <div class="v"><span class="l">Old Regime · total tax/yr</span><span class="n" id="txOld">—</span></div>
+      </div>
+      <div class="statusbar" id="txStatus">—</div>
+    </div>
+    <p style="font-size:12.5px;color:var(--faint);margin-top:12px;">Assumes both are senior citizens (60+). New Regime: ₹75k standard deduction, nil tax up to ₹12L ordinary income (§87A rebate), LTCG 12.5% over ₹1.25L. Old Regime: ₹50k standard deduction + ₹50k §80TTB, ₹3L senior exemption, nil up to ₹5L (rebate), LTCG 12.5% over ₹1.25L. Includes 4% cess. Ignores other deductions (80C/80D/home-loan) — with those the Old Regime can improve. Verify with a CA.</p>
   </section>
 
   <!-- ======================= 6. CALCULATOR ======================= -->
@@ -603,7 +627,10 @@
           <input type="range" id="T" min="0" max="25" step="1" value="8"><div class="hint">Withdraw a little more to cover tax</div></div>
         <div class="ctrl"><label>Health &amp; emergency reserve <span class="valwrap">₹<input type="number" class="numin" id="H_n" min="0" max="100" step="5" value="40"><span class="u">L</span></span></label>
           <input type="range" id="H" min="0" max="100" step="5" value="40"><div class="hint">Bucket 4 · kept aside, never spent on income</div></div>
+        <div class="ctrl"><label>Inflation (for today's-money view) <span class="valwrap"><input type="number" class="numin" id="INF_n" min="3" max="10" step="0.5" value="6"><span class="u">%</span></span></label>
+          <input type="range" id="INF" min="3" max="10" step="0.5" value="6"><div class="hint">Used only by the toggle below</div></div>
       </div>
+      <div class="realbar"><label><input type="checkbox" id="realMode"> <b>Show figures in today's money</b> (real purchasing power)</label> <span class="realnote">— see how the step-ups really keep up with rising prices</span></div>
 
       <div class="mixbox">
         <div class="mix-h"><b>Bucket mix — your scenario.</b> Set the split; the calculator works out the blended return &amp; risk. <span class="mix-presets">Try: <button type="button" class="mixbtn" data-mix="50,30,20">Safe</button><button type="button" class="mixbtn" data-mix="34,26,40">Balanced</button><button type="button" class="mixbtn" data-mix="18,22,60">Aggressive</button></span></div>
@@ -876,7 +903,7 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
   const inrFull = n => "₹" + Math.round(n).toLocaleString('en-IN');
 
   const ANNUITY_RATE = 0.07;   // joint-life, return-of-purchase-price, nominal
-  const ids = ["C","P","A","I","S","N","T","H"];
+  const ids = ["C","P","A","I","S","N","T","H","INF"];
 
   // two-way sync: slider <-> editable number box, both trigger recompute
   ids.forEach(k => {
@@ -891,6 +918,8 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
       num.addEventListener('blur', () => { num.value = clamp(+num.value || +rng.min); rng.value = num.value; recompute(); });
     }
   });
+  const rmChk=$("realMode"); if(rmChk) rmChk.addEventListener('change', recompute);
+
   // read a control's numeric value (prefers the number box while typing)
   const val = k => { const num=$(k+"_n"); const n = num && num.value!=='' ? +num.value : +$(k).value;
     return isNaN(n) ? +$(k).value : Math.min(+$(k).max, Math.max(+$(k).min, n)); };
@@ -937,13 +966,14 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
     return {prob:success/paths, dep:depleted/paths, p10:q(0.10), p50:q(0.50), p90:q(0.90), ends};
   }
 
-  function renderMC(mc,Ceff){
+  function renderMC(mc,Ceff,deflN){
+    deflN = deflN || 1;
     const badge=$("mcBadge"), probEl=$("mcProb");
     const pct=Math.round(mc.prob*100);
     probEl.textContent = pct + "%";
-    $("mcP10").textContent = inr(Math.max(mc.p10,0));
-    $("mcP50").textContent = inr(Math.max(mc.p50,0));
-    $("mcP90").textContent = inr(Math.max(mc.p90,0));
+    $("mcP10").textContent = inr(Math.max(mc.p10,0)/deflN);
+    $("mcP50").textContent = inr(Math.max(mc.p50,0)/deflN);
+    $("mcP90").textContent = inr(Math.max(mc.p90,0)/deflN);
     let cls = pct>=90?"ok":(pct>=75?"warn":"fail");
     let lab = pct>=90?"Robust":(pct>=75?"Fragile":"High risk");
     badge.className="mc-badge "+cls; badge.textContent=lab+" · "+pct+"% survive";
@@ -999,7 +1029,12 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
       $("anPct").textContent = Math.round(annAnnual/(I*12)*100) + "%";
     } else { aline.hidden = true; }
 
-    let bal = draw, minBal = draw, paid = 0;
+    // today's-money (real) view
+    const real = !!(rmChk && rmChk.checked);
+    const infl = val("INF")/100;
+    const defl = yr => real ? Math.pow(1+infl, yr) : 1;
+
+    let bal = draw, minBal = draw, minYear = 0, paid = 0;
     const rows = [];
     for (let y=1; y<=N; y++){
       const block = Math.floor((y-1)/5);
@@ -1008,7 +1043,7 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
       const corpusW = Math.max(0, grossW - annAnnual);   // annuity covers part
       bal = bal - corpusW;
       const dip = bal;
-      if (dip < minBal) minBal = dip;
+      if (dip < minBal){ minBal = dip; minYear = y; }
       bal = bal * (1+R);
       paid += grossW + 0;                                // total delivered to retiree
       rows.push({y, age:58+y, monthly:netW/12, netW, grossW, bal: bal});
@@ -1018,9 +1053,10 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
       }
     }
 
-    $("oEnd").textContent = inr(Math.max(bal,0));
-    $("oMin").textContent = inr(Math.max(minBal,0));
-    $("oPaid").textContent = inr(paid);
+    $("oEnd").textContent = inr(Math.max(bal,0)/defl(N));
+    $("oMin").textContent = inr(Math.max(minBal,0)/defl(minYear||N));
+    $("oPaid").textContent = inr(paid) + (real ? " (nominal)" : "");
+    if (typeof document.querySelector === "function"){ const vE=document.querySelector('.verdict'); if(vE) vE.classList.toggle('realon', real); }
 
     // verdict
     const status = $("status");
@@ -1047,17 +1083,18 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
     const tb = $("projBody");
     tb.innerHTML = rows.map(r => {
       const dead = r.netW === null;
+      const d = defl(r.y);
       return `<tr${(r.y-1)%5===0?' style="border-top:2px solid var(--line-strong)"':''}>
         <td>${r.y}</td><td>${r.age}</td>
-        <td>${dead?'—':inrFull(r.monthly)}</td>
-        <td>${dead?'—':inr(r.netW)}</td>
-        <td>${dead?'—':inr(r.grossW)}</td>
-        <td style="color:${r.bal<0?'var(--crit)':'inherit'};font-weight:${(r.y)%5===0?'600':'400'}">${inr(r.bal)}</td>
+        <td>${dead?'—':inrFull(r.monthly/d)}</td>
+        <td>${dead?'—':inr(r.netW/d)}</td>
+        <td>${dead?'—':inr(r.grossW/d)}</td>
+        <td style="color:${r.bal<0?'var(--crit)':'inherit'};font-weight:${(r.y)%5===0?'600':'400'}">${inr(r.bal/d)}</td>
       </tr>`;
     }).join('');
 
     // Monte-Carlo stress test (1,000 paths)
-    renderMC(monteCarlo(draw, annAnnual, I, S, T, N, R, vol, 1000), Math.max(draw,1));
+    renderMC(monteCarlo(draw, annAnnual, I, S, T, N, R, vol, 1000), Math.max(draw,1), defl(N));
   }
   recompute();
 
@@ -1172,6 +1209,38 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
     msgEl.innerHTML=`A SIP of <b>₹${sip.toLocaleString('en-IN')}/month</b> reaches your goal. ✓ set.`;
   });
 
+  calc();
+})();
+
+// ---- Tax estimator: Old vs New regime (senior, FY2026-27) ----
+(function(){
+  const $=id=>document.getElementById(id);
+  if(!$("txNew")) return;
+  const inr=n=> n>=1e5?"₹"+(n/1e5).toFixed(2)+" L":"₹"+Math.round(n).toLocaleString('en-IN');
+  const ids=["txInt","txLtcg"];
+  ids.forEach(k=>{ const r=$(k),n=$(k+"_n"),c=v=>Math.min(+r.max,Math.max(+r.min,v));
+    r.addEventListener('input',()=>{ if(n)n.value=r.value; calc(); });
+    if(n){ n.addEventListener('input',()=>{ if(n.value===''||isNaN(+n.value)){calc();return;} r.value=c(+n.value); calc(); });
+      n.addEventListener('blur',()=>{ n.value=c(+n.value||+r.min); r.value=n.value; calc(); }); } });
+  const sp=$("txSplit"); if(sp) sp.addEventListener('change', calc);
+  const val=k=>{ const n=$(k+"_n"); const v=n&&n.value!==''?+n.value:+$(k).value; return isNaN(v)?+$(k).value:Math.min(+$(k).max,Math.max(+$(k).min,v)); };
+  function slab(t,bands){ let tax=0,prev=0; for(const b of bands){ const cap=b[0],rate=b[1]; if(t>prev) tax+=(Math.min(t,cap)-prev)*rate; prev=cap; if(t<=cap) break; } return tax; }
+  const NEW=[[400000,0],[800000,0.05],[1200000,0.10],[1600000,0.15],[2000000,0.20],[2400000,0.25],[Infinity,0.30]];
+  const OLD=[[300000,0],[500000,0.05],[1000000,0.20],[Infinity,0.30]];
+  const ltcgTax=g=>0.125*Math.max(0,g-125000);
+  function taxNew(intInc,g){ const taxable=Math.max(0,intInc-75000); const ord=taxable<=1200000?0:slab(taxable,NEW); return (ord+ltcgTax(g))*1.04; }
+  function taxOld(intInc,g){ const taxable=Math.max(0,intInc-50000-50000); const ord=taxable<=500000?0:slab(taxable,OLD); return (ord+ltcgTax(g))*1.04; }
+  function calc(){
+    const intInc=val("txInt")*1e5, g=val("txLtcg")*1e5, split=$("txSplit").checked;
+    const nw = split ? 2*taxNew(intInc/2,g/2) : taxNew(intInc,g);
+    const od = split ? 2*taxOld(intInc/2,g/2) : taxOld(intInc,g);
+    $("txNew").textContent=inr(nw); $("txOld").textContent=inr(od);
+    const total=intInc+g, eff=total>0?Math.min(nw,od)/total*100:0;
+    const st=$("txStatus"), lower = nw<=od ? "New Regime" : "Old Regime";
+    st.className="statusbar ok";
+    st.innerHTML = `✓ <b>${lower}</b> is cheaper here — effective tax ≈ <b>${eff.toFixed(1)}%</b> on ₹${(total/1e5).toFixed(0)}L of income.`
+      + (split ? " Splitting across both spouses uses two sets of allowances." : " Tip: tick “split” to roughly halve this.");
+  }
   calc();
 })();
 

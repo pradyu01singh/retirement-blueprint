@@ -198,6 +198,11 @@
   .solvebtn:active{transform:translateY(1px);}
   .solvemsg{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;}
   .solvemsg b{color:var(--emerald);}
+  .realbar{padding:11px 26px;border-bottom:1px solid var(--line);font-size:13.5px;background:var(--brass-soft);}
+  .realbar label{cursor:pointer;}
+  .realbar input{width:16px;height:16px;vertical-align:-2px;accent-color:var(--brass);cursor:pointer;}
+  .realbar .realnote{color:var(--muted);}
+  .realon .n, .realon td{color:var(--warn)!important;}
   .acchart .acbar{flex:1;display:flex;flex-direction:column-reverse;min-height:2px;border-radius:3px 3px 0 0;overflow:hidden;}
   .acchart .acbar .inv{background:var(--b2);}
   .acchart .acbar .gain{background:var(--b3);}
@@ -576,6 +581,25 @@
       </tbody>
     </table></div>
     <div class="callout"><b>मूल टैक्स समझ:</b> ₹1L/महीना = ₹12L/साल। नई रिजीम में दो लोगों में बाँटें, तो ब्याज का आधार भार करीब-करीब पूरा शून्य/कम-टैक्स बैंड में बैठ सकता है, जबकि इक्विटी-SWP टॉप-अप पर सिर्फ उसके मुनाफे वाले हिस्से पर टैक्स लगता है — जिसे दो ₹1.25L LTCG छूटें और बचा लेती हैं। मिलाकर, एक दंपती <b>असरदार टैक्स को कम, इकाई अंकों में</b> रख सकता है, इसलिए ₹1L <em>शुद्ध</em> के लिए सिर्फ ~₹1.05–1.10L कुल चाहिए, ₹1.3L+ नहीं। <b>ध्यान दें:</b> नई रिजीम का ₹60 हज़ार रिबेट LTCG/STCG की खास-दर वाले टैक्स को कभी कम नहीं करता — उन्हें अलग से प्लान करें। नया <b>इनकम-टैक्स एक्ट 2025</b> (1 अप्रैल 2026 से लागू) इन धाराओं के नंबर बदल सकता है; मतलब वही रहेगा — लेबल अपने CA से पक्के करें।</div>
+
+    <h3 style="font-size:19px;margin:38px 0 12px;">झटपट टैक्स अनुमान — पुरानी बनाम नई रिजीम</h3>
+    <div class="simple"><span class="ic">🟢</span><p><b>आसान शब्दों में:</b> अपनी सालाना आमदनी प्रकार के हिसाब से भरें और देखें कि दंपती लगभग कितना टैक्स देता है — और कौन-सी रिजीम सस्ती है। सबसे बड़ा फ़ायदा है <b>आमदनी को दोनों साथियों में बाँटना</b>, ताकि हर एक अपनी टैक्स-फ्री छूट इस्तेमाल करे। यह वरिष्ठ नागरिकों के लिए FY2026-27 नियमों का एक मोटा अनुमान है, टैक्स फाइलिंग <em>नहीं</em> — CA से पक्का करें।</p></div>
+    <div class="calc">
+      <p class="calctip">✎ <b>टाइप करें या खींचें।</b> रकम सालाना, पूरे दंपती के लिए।</p>
+      <div class="controls">
+        <div class="ctrl"><label>ब्याज आमदनी / साल <span class="valwrap">₹<input type="number" class="numin" id="txInt_n" min="0" max="50" step="1" value="14"><span class="u">L</span></span></label>
+          <input type="range" id="txInt" min="0" max="50" step="1" value="14"><div class="hint">SCSS, FD, POMIS, बॉन्ड — तनख़्वाह की तरह टैक्स</div></div>
+        <div class="ctrl"><label>इक्विटी LTCG / साल <span class="valwrap">₹<input type="number" class="numin" id="txLtcg_n" min="0" max="30" step="1" value="3"><span class="u">L</span></span></label>
+          <input type="range" id="txLtcg" min="0" max="30" step="1" value="3"><div class="hint">आपके इक्विटी-फंड SWP का मुनाफ़ा हिस्सा</div></div>
+      </div>
+      <div class="realbar"><label><input type="checkbox" id="txSplit" checked> <b>आमदनी दोनों साथियों में बराबर बाँटें</b></label> <span class="realnote">— हटाकर देखें कि सब एक व्यक्ति पर हो तो कितना टैक्स</span></div>
+      <div class="verdict" style="grid-template-columns:1fr 1fr;">
+        <div class="v"><span class="l">नई रिजीम · कुल टैक्स/साल</span><span class="n" id="txNew">—</span></div>
+        <div class="v"><span class="l">पुरानी रिजीम · कुल टैक्स/साल</span><span class="n" id="txOld">—</span></div>
+      </div>
+      <div class="statusbar" id="txStatus">—</div>
+    </div>
+    <p style="font-size:12.5px;color:var(--faint);margin-top:12px;">मानता है दोनों वरिष्ठ नागरिक (60+) हैं। नई रिजीम: ₹75 हज़ार स्टैंडर्ड डिडक्शन, ₹12L तक साधारण आमदनी पर शून्य टैक्स (§87A रिबेट), LTCG ₹1.25L के ऊपर 12.5%। पुरानी रिजीम: ₹50 हज़ार डिडक्शन + ₹50 हज़ार §80TTB, ₹3L वरिष्ठ छूट, ₹5L तक शून्य (रिबेट), LTCG ₹1.25L के ऊपर 12.5%। 4% सेस शामिल। अन्य कटौतियाँ (80C/80D/होम-लोन) नहीं गिनीं — उनके साथ पुरानी रिजीम बेहतर हो सकती है। CA से जाँचें।</p>
   </section>
 
   <!-- ======================= 6. CALCULATOR ======================= -->
@@ -603,7 +627,10 @@
           <input type="range" id="T" min="0" max="25" step="1" value="8"><div class="hint">टैक्स के लिए थोड़ा ज़्यादा निकालें</div></div>
         <div class="ctrl"><label>सेहत &amp; आपात रिज़र्व <span class="valwrap">₹<input type="number" class="numin" id="H_n" min="0" max="100" step="5" value="40"><span class="u">L</span></span></label>
           <input type="range" id="H" min="0" max="100" step="5" value="40"><div class="hint">बकेट 4 · अलग रखा, आमदनी पर कभी खर्च नहीं</div></div>
+        <div class="ctrl"><label>महँगाई (आज के पैसे वाले व्यू के लिए) <span class="valwrap"><input type="number" class="numin" id="INF_n" min="3" max="10" step="0.5" value="6"><span class="u">%</span></span></label>
+          <input type="range" id="INF" min="3" max="10" step="0.5" value="6"><div class="hint">सिर्फ़ नीचे के टॉगल में इस्तेमाल</div></div>
       </div>
+      <div class="realbar"><label><input type="checkbox" id="realMode"> <b>आँकड़े आज के पैसे में दिखाएँ</b> (असली खरीद-शक्ति)</label> <span class="realnote">— देखें कि बढ़ोतरी सचमुच बढ़ती कीमतों के साथ कितना चलती है</span></div>
 
       <div class="mixbox">
         <div class="mix-h"><b>बकेट मिश्रण — आपकी स्थिति।</b> बँटवारा तय करें; कैलकुलेटर मिला-जुला रिटर्न और जोखिम निकाल देगा। <span class="mix-presets">आज़माएँ: <button type="button" class="mixbtn" data-mix="50,30,20">सुरक्षित</button><button type="button" class="mixbtn" data-mix="34,26,40">संतुलित</button><button type="button" class="mixbtn" data-mix="18,22,60">आक्रामक</button></span></div>
@@ -876,7 +903,7 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
   const inrFull = n => "₹" + Math.round(n).toLocaleString('en-IN');
 
   const ANNUITY_RATE = 0.07;   // joint-life, return-of-purchase-price, nominal
-  const ids = ["C","P","A","I","S","N","T","H"];
+  const ids = ["C","P","A","I","S","N","T","H","INF"];
 
   // two-way sync: slider <-> editable number box, both trigger recompute
   ids.forEach(k => {
@@ -891,6 +918,8 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
       num.addEventListener('blur', () => { num.value = clamp(+num.value || +rng.min); rng.value = num.value; recompute(); });
     }
   });
+  const rmChk=$("realMode"); if(rmChk) rmChk.addEventListener('change', recompute);
+
   // read a control's numeric value (prefers the number box while typing)
   const val = k => { const num=$(k+"_n"); const n = num && num.value!=='' ? +num.value : +$(k).value;
     return isNaN(n) ? +$(k).value : Math.min(+$(k).max, Math.max(+$(k).min, n)); };
@@ -937,13 +966,14 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
     return {prob:success/paths, dep:depleted/paths, p10:q(0.10), p50:q(0.50), p90:q(0.90), ends};
   }
 
-  function renderMC(mc,Ceff){
+  function renderMC(mc,Ceff,deflN){
+    deflN = deflN || 1;
     const badge=$("mcBadge"), probEl=$("mcProb");
     const pct=Math.round(mc.prob*100);
     probEl.textContent = pct + "%";
-    $("mcP10").textContent = inr(Math.max(mc.p10,0));
-    $("mcP50").textContent = inr(Math.max(mc.p50,0));
-    $("mcP90").textContent = inr(Math.max(mc.p90,0));
+    $("mcP10").textContent = inr(Math.max(mc.p10,0)/deflN);
+    $("mcP50").textContent = inr(Math.max(mc.p50,0)/deflN);
+    $("mcP90").textContent = inr(Math.max(mc.p90,0)/deflN);
     let cls = pct>=90?"ok":(pct>=75?"warn":"fail");
     let lab = pct>=90?"मज़बूत":(pct>=75?"कमज़ोर":"जोखिमभरा");
     badge.className="mc-badge "+cls; badge.textContent=lab+" · "+pct+"% सुरक्षित";
@@ -999,18 +1029,22 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
       $("anPct").textContent = Math.round(annAnnual/(I*12)*100) + "%";
     } else { aline.hidden = true; }
 
-    let bal = draw, minBal = draw, paid = 0;
+    const real = !!(rmChk && rmChk.checked);
+    const infl = val("INF")/100;
+    const defl = yr => real ? Math.pow(1+infl, yr) : 1;
+
+    let bal = draw, minBal = draw, minYear = 0, paid = 0;
     const rows = [];
     for (let y=1; y<=N; y++){
       const block = Math.floor((y-1)/5);
       const netW = I * 12 * Math.pow(1+S, block);
       const grossW = netW * (1+T);
-      const corpusW = Math.max(0, grossW - annAnnual);   // annuity covers part
+      const corpusW = Math.max(0, grossW - annAnnual);
       bal = bal - corpusW;
       const dip = bal;
-      if (dip < minBal) minBal = dip;
+      if (dip < minBal){ minBal = dip; minYear = y; }
       bal = bal * (1+R);
-      paid += grossW + 0;                                // total delivered to retiree
+      paid += grossW + 0;
       rows.push({y, age:58+y, monthly:netW/12, netW, grossW, bal: bal});
       if (bal < 0){
         for(let z=y+1; z<=N; z++){ rows.push({y:z, age:58+z, monthly:I*Math.pow(1+S,Math.floor((z-1)/5)), netW:null, grossW:null, bal:bal}); }
@@ -1018,9 +1052,10 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
       }
     }
 
-    $("oEnd").textContent = inr(Math.max(bal,0));
-    $("oMin").textContent = inr(Math.max(minBal,0));
-    $("oPaid").textContent = inr(paid);
+    $("oEnd").textContent = inr(Math.max(bal,0)/defl(N));
+    $("oMin").textContent = inr(Math.max(minBal,0)/defl(minYear||N));
+    $("oPaid").textContent = inr(paid) + (real ? " (नॉमिनल)" : "");
+    if (typeof document.querySelector === "function"){ const vE=document.querySelector('.verdict'); if(vE) vE.classList.toggle('realon', real); }
 
     // verdict
     const status = $("status");
@@ -1047,17 +1082,18 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
     const tb = $("projBody");
     tb.innerHTML = rows.map(r => {
       const dead = r.netW === null;
+      const d = defl(r.y);
       return `<tr${(r.y-1)%5===0?' style="border-top:2px solid var(--line-strong)"':''}>
         <td>${r.y}</td><td>${r.age}</td>
-        <td>${dead?'—':inrFull(r.monthly)}</td>
-        <td>${dead?'—':inr(r.netW)}</td>
-        <td>${dead?'—':inr(r.grossW)}</td>
-        <td style="color:${r.bal<0?'var(--crit)':'inherit'};font-weight:${(r.y)%5===0?'600':'400'}">${inr(r.bal)}</td>
+        <td>${dead?'—':inrFull(r.monthly/d)}</td>
+        <td>${dead?'—':inr(r.netW/d)}</td>
+        <td>${dead?'—':inr(r.grossW/d)}</td>
+        <td style="color:${r.bal<0?'var(--crit)':'inherit'};font-weight:${(r.y)%5===0?'600':'400'}">${inr(r.bal/d)}</td>
       </tr>`;
     }).join('');
 
     // Monte-Carlo stress test (1,000 paths)
-    renderMC(monteCarlo(draw, annAnnual, I, S, T, N, R, vol, 1000), Math.max(draw,1));
+    renderMC(monteCarlo(draw, annAnnual, I, S, T, N, R, vol, 1000), Math.max(draw,1), defl(N));
   }
   recompute();
 
@@ -1170,6 +1206,38 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
     msgEl.innerHTML=`<b>₹${sip.toLocaleString('en-IN')}/माह</b> की SIP लक्ष्य तक पहुँचती है। ✓ सेट।`;
   });
 
+  calc();
+})();
+
+// ---- टैक्स अनुमान: पुरानी बनाम नई रिजीम (वरिष्ठ, FY2026-27) ----
+(function(){
+  const $=id=>document.getElementById(id);
+  if(!$("txNew")) return;
+  const inr=n=> n>=1e5?"₹"+(n/1e5).toFixed(2)+" लाख":"₹"+Math.round(n).toLocaleString('en-IN');
+  const ids=["txInt","txLtcg"];
+  ids.forEach(k=>{ const r=$(k),n=$(k+"_n"),c=v=>Math.min(+r.max,Math.max(+r.min,v));
+    r.addEventListener('input',()=>{ if(n)n.value=r.value; calc(); });
+    if(n){ n.addEventListener('input',()=>{ if(n.value===''||isNaN(+n.value)){calc();return;} r.value=c(+n.value); calc(); });
+      n.addEventListener('blur',()=>{ n.value=c(+n.value||+r.min); r.value=n.value; calc(); }); } });
+  const sp=$("txSplit"); if(sp) sp.addEventListener('change', calc);
+  const val=k=>{ const n=$(k+"_n"); const v=n&&n.value!==''?+n.value:+$(k).value; return isNaN(v)?+$(k).value:Math.min(+$(k).max,Math.max(+$(k).min,v)); };
+  function slab(t,bands){ let tax=0,prev=0; for(const b of bands){ const cap=b[0],rate=b[1]; if(t>prev) tax+=(Math.min(t,cap)-prev)*rate; prev=cap; if(t<=cap) break; } return tax; }
+  const NEW=[[400000,0],[800000,0.05],[1200000,0.10],[1600000,0.15],[2000000,0.20],[2400000,0.25],[Infinity,0.30]];
+  const OLD=[[300000,0],[500000,0.05],[1000000,0.20],[Infinity,0.30]];
+  const ltcgTax=g=>0.125*Math.max(0,g-125000);
+  function taxNew(intInc,g){ const taxable=Math.max(0,intInc-75000); const ord=taxable<=1200000?0:slab(taxable,NEW); return (ord+ltcgTax(g))*1.04; }
+  function taxOld(intInc,g){ const taxable=Math.max(0,intInc-50000-50000); const ord=taxable<=500000?0:slab(taxable,OLD); return (ord+ltcgTax(g))*1.04; }
+  function calc(){
+    const intInc=val("txInt")*1e5, g=val("txLtcg")*1e5, split=$("txSplit").checked;
+    const nw = split ? 2*taxNew(intInc/2,g/2) : taxNew(intInc,g);
+    const od = split ? 2*taxOld(intInc/2,g/2) : taxOld(intInc,g);
+    $("txNew").textContent=inr(nw); $("txOld").textContent=inr(od);
+    const total=intInc+g, eff=total>0?Math.min(nw,od)/total*100:0;
+    const st=$("txStatus"), lower = nw<=od ? "नई रिजीम" : "पुरानी रिजीम";
+    st.className="statusbar ok";
+    st.innerHTML = `✓ यहाँ <b>${lower}</b> सस्ती है — असरदार टैक्स ≈ <b>${eff.toFixed(1)}%</b>, ₹${(total/1e5).toFixed(0)}L आमदनी पर।`
+      + (split ? " दोनों साथियों में बाँटने से दो सेट छूटें इस्तेमाल होती हैं।" : " सुझाव: “बाँटें” टिक करें, टैक्स लगभग आधा।");
+  }
   calc();
 })();
 
