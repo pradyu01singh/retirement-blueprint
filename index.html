@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bucket Retirement Blueprint</title>
+<meta name="description" content="A layman-friendly 4-bucket retirement plan with a live Monte-Carlo & annuity calculator — in English and Hindi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Serif+Devanagari:wght@600&display=swap">
+<style>
+  :root{
+    --paper:#f6f4ef; --card:#fffdfa; --ink:#1b2620; --muted:#5b6660; --faint:#8a938d;
+    --line:#e3ded3; --emerald:#1f6f52; --brass:#a97e3c;
+    --shadow:0 1px 2px rgba(27,38,32,.05),0 10px 30px rgba(27,38,32,.07);
+  }
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --paper:#141b18; --card:#1c2521; --ink:#e9ede9; --muted:#9fa9a2; --faint:#727d76;
+    --line:#2b352f; --emerald:#5fbf95; --brass:#d3ab63;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 34px rgba(0,0,0,.4);
+  }}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.6;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:32px 20px;}
+  .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);font-weight:600;margin:0 0 14px;}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(30px,6vw,48px);
+    letter-spacing:-.01em;text-align:center;margin:0 0 12px;max-width:16ch;text-wrap:balance;}
+  .sub{color:var(--muted);text-align:center;max-width:56ch;margin:0 0 40px;font-size:16px;}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;max-width:680px;}
+  @media(max-width:560px){.cards{grid-template-columns:1fr;}}
+  a.card{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:inherit;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px 26px;
+    box-shadow:var(--shadow);transition:transform .15s ease,border-color .15s ease;border-top:4px solid var(--emerald);}
+  a.card:hover{transform:translateY(-3px);border-color:var(--emerald);}
+  a.card .lang{font-size:13px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;}
+  a.card .name{font-size:26px;font-weight:600;}
+  a.card.hi .name{font-family:"Noto Serif Devanagari",serif;}
+  a.card .go{margin-top:10px;color:var(--emerald);font-weight:600;font-size:14px;}
+  .meta{margin-top:36px;font-size:13px;color:var(--faint);text-align:center;}
+  .meta a{color:var(--emerald);}
+  .disc{margin-top:14px;font-size:11.5px;color:var(--faint);max-width:60ch;text-align:center;}
+</style>
+</head>
+<body>
+  <p class="eyebrow">Private Client · Retirement Income</p>
+  <h1>Bucket Retirement Blueprint</h1>
+  <p class="sub">A step-by-step plan to draw ₹1 lakh a month — rising over time — for 30-plus years without running out. Pick a language.</p>
+  <div class="cards">
+    <a class="card en" href="en/">
+      <span class="lang">English</span>
+      <span class="name">Read the plan</span>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card hi" href="hi/">
+      <span class="lang">हिन्दी · Hindi</span>
+      <span class="name">योजना पढ़ें</span>
+      <span class="go">खोलें →</span>
+    </a>
+  </div>
+  <p class="meta">Interactive calculator · Monte-Carlo stress test · action checklist ·
+    <a href="https://github.com/pradyu01singh/retirement-blueprint">source on GitHub</a></p>
+  <p class="disc">Educational framework, not personalised investment advice. Not from a SEBI-registered adviser.
+    Rates and tax rules change — verify against current notifications and a qualified adviser before acting.</p>
+</body>
+</html>
