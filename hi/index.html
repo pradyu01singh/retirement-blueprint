@@ -1,0 +1,941 @@
+<title>रिटायरमेंट बकेट प्लान</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#f6f4ef; --card:#fffdfa; --ink:#1b2620; --muted:#5b6660; --faint:#8a938d;
+    --line:#e3ded3; --line-strong:#cfc8b8;
+    --emerald:#1f6f52; --emerald-soft:#e7f1ec; --brass:#a97e3c; --brass-soft:#f4ecdc;
+    --steel:#3a6ea5; --steel-soft:#e6eef6;
+    --growth:#1f7a5a; --good:#1f7a5a; --warn:#b7791f; --crit:#b23b32;
+    --b1:#3a6ea5; --b1-bg:#e8eff7; --b2:#a97e3c; --b2-bg:#f5ecda; --b3:#1f7a5a; --b3-bg:#e5f1ea;
+    --b4:#2f8f8f; --b4-bg:#e1efef;
+    --shadow:0 1px 2px rgba(27,38,32,.05),0 8px 24px rgba(27,38,32,.06);
+    --radius:14px;
+  }
+  :root:not([data-theme="light"]){}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#141b18; --card:#1c2521; --ink:#e9ede9; --muted:#9fa9a2; --faint:#727d76;
+      --line:#2b352f; --line-strong:#3a463f;
+      --emerald:#5fbf95; --emerald-soft:#17281f; --brass:#d3ab63; --brass-soft:#2a2213;
+      --steel:#7aa9d8; --steel-soft:#16222e;
+      --growth:#5fbf95; --good:#5fbf95; --warn:#e0b155; --crit:#e08078;
+      --b1:#7aa9d8; --b1-bg:#16222e; --b2:#d3ab63; --b2-bg:#2a2213; --b3:#5fbf95; --b3-bg:#16281f;
+      --b4:#5ec5c5; --b4-bg:#12282a;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#141b18; --card:#1c2521; --ink:#e9ede9; --muted:#9fa9a2; --faint:#727d76;
+    --line:#2b352f; --line-strong:#3a463f;
+    --emerald:#5fbf95; --emerald-soft:#17281f; --brass:#d3ab63; --brass-soft:#2a2213;
+    --steel:#7aa9d8; --steel-soft:#16222e;
+    --growth:#5fbf95; --good:#5fbf95; --warn:#e0b155; --crit:#e08078;
+    --b1:#7aa9d8; --b1-bg:#16222e; --b2:#d3ab63; --b2-bg:#2a2213; --b3:#5fbf95; --b3-bg:#16281f;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);
+    font-family:"Noto Sans Devanagari",system-ui,sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;margin:0;}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px 96px;}
+  h1,h2,h3,h4{font-family:"Noto Serif Devanagari",Georgia,serif;text-wrap:balance;line-height:1.15;font-weight:600;}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;}
+  .num{font-variant-numeric:tabular-nums;}
+
+  /* Masthead */
+  header.mast{padding:64px 0 40px;border-bottom:2px solid var(--ink);margin-bottom:8px;}
+  .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);
+    font-weight:600;margin:0 0 18px;}
+  header.mast h1{font-size:clamp(34px,6vw,60px);margin:0 0 18px;letter-spacing:-.01em;}
+  header.mast .lede{font-size:clamp(16px,2.2vw,19px);color:var(--muted);max-width:60ch;margin:0;}
+  .clientstrip{display:flex;flex-wrap:wrap;gap:28px;margin-top:32px;padding-top:24px;
+    border-top:1px solid var(--line);}
+  .clientstrip div{display:flex;flex-direction:column;gap:2px;}
+  .clientstrip .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);}
+  .clientstrip .v{font-size:15px;font-weight:600;}
+
+  .plainbox{margin-top:32px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--emerald);
+    border-radius:14px;padding:26px 28px;box-shadow:var(--shadow);}
+  .plainbox h2{font-size:22px;margin:0 0 12px;color:var(--emerald);}
+  .plainbox p{font-size:15.5px;margin:0 0 16px;max-width:74ch;}
+  .plaingrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:18px 0;}
+  @media(max-width:760px){.plaingrid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:460px){.plaingrid{grid-template-columns:1fr;}}
+  .plaingrid > div{background:var(--paper);border-radius:10px;padding:14px 16px;border:1px solid var(--line);}
+  .plaingrid b{display:block;font-size:14.5px;margin:8px 0 4px;}
+  .plaingrid p{font-size:13px;color:var(--muted);margin:0;}
+  .pb{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;
+    color:#fff;font-weight:700;font-family:"IBM Plex Mono",monospace;font-size:15px;}
+  .pb.b1{background:var(--b1);} .pb.b2{background:var(--b2);} .pb.b3{background:var(--b3);} .pb.b4{background:var(--b4);}
+  section{padding-top:56px;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;}
+  .sec-num{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--brass);font-weight:500;
+    border:1px solid var(--line-strong);border-radius:6px;padding:2px 8px;flex:none;}
+  section h2{font-size:clamp(24px,3.6vw,34px);margin:0;letter-spacing:-.01em;}
+  .sub{color:var(--muted);max-width:68ch;margin:10px 0 26px;font-size:15.5px;}
+
+  p{max-width:70ch;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:26px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr;}}
+
+  /* Headline stat band */
+  .band{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:8px 0 4px;}
+  .band .cell{background:var(--card);padding:24px 22px;}
+  .band .cell .lab{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .band .cell .big{font-family:"Fraunces",serif;font-size:clamp(28px,4.5vw,40px);font-weight:600;line-height:1;
+    font-variant-numeric:tabular-nums;}
+  .band .cell .cap{font-size:13px;color:var(--faint);margin-top:8px;}
+  .band .cell.hl{background:var(--emerald-soft);}
+  .band .cell.hl .big{color:var(--emerald);}
+  @media(max-width:760px){.band{grid-template-columns:1fr;}}
+
+  table{width:100%;border-collapse:collapse;font-size:14.5px;}
+  .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);}
+  th,td{padding:12px 16px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;}
+  th:first-child,td:first-child{text-align:left;}
+  thead th{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;
+    background:var(--paper);position:sticky;top:0;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody td{font-variant-numeric:tabular-nums;}
+  tr.base td{background:var(--emerald-soft);font-weight:600;}
+  .chip{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;
+    letter-spacing:.03em;}
+  .chip.good{background:var(--emerald-soft);color:var(--good);}
+  .chip.warn{background:var(--brass-soft);color:var(--warn);}
+  .chip.crit{background:#f6e3e0;color:var(--crit);}
+  :root[data-theme="dark"] .chip.crit,:root:not([data-theme="light"]) .chip.crit{background:#3a1e1b;}
+
+  /* Buckets */
+  .bucket{border-radius:var(--radius);border:1px solid var(--line);background:var(--card);
+    box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;}
+  .bucket .top{padding:20px 22px 18px;border-top:4px solid var(--bc);}
+  .bucket .tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--bc);}
+  .bucket h3{font-size:20px;margin:8px 0 2px;}
+  .bucket .yrs{font-size:13px;color:var(--muted);font-family:"IBM Plex Mono",monospace;}
+  .bucket .alloc{font-family:"Fraunces",serif;font-size:30px;font-weight:600;margin-top:12px;
+    font-variant-numeric:tabular-nums;}
+  .bucket .alloc small{font-size:14px;color:var(--muted);font-family:"IBM Plex Sans";font-weight:400;}
+  .bucket ul{list-style:none;padding:0 22px 22px;margin:14px 0 0;display:flex;flex-direction:column;gap:12px;}
+  .bucket li{font-size:13.5px;padding-left:16px;position:relative;color:var(--ink);}
+  .bucket li:before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:2px;background:var(--bc);}
+  .bucket li b{font-weight:600;}
+  .bucket li span{color:var(--muted);display:block;font-size:12.5px;}
+  .b1{--bc:var(--b1);} .b2{--bc:var(--b2);} .b3{--bc:var(--b3);} .b4{--bc:var(--b4);}
+  .bucket.wide{margin-top:20px;}
+  .bucket.wide .top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px;}
+  .bucket.wide .splitcols{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;padding:0 22px 22px;}
+  @media(max-width:640px){.bucket.wide .splitcols{grid-template-columns:1fr;}}
+  .bucket.wide .splitcols ul{padding:14px 0 0;}
+
+  .allocbar{display:flex;height:34px;border-radius:8px;overflow:hidden;margin:6px 0 22px;border:1px solid var(--line);}
+  .allocbar div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;
+    font-family:"IBM Plex Mono",monospace;}
+
+  /* Calculator */
+  .calc{background:var(--card);border:1px solid var(--line-strong);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden;}
+  .calc .controls{padding:26px;display:grid;grid-template-columns:1fr 1fr;gap:22px 28px;
+    border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--paper),var(--card));}
+  @media(max-width:680px){.calc .controls{grid-template-columns:1fr;}}
+  .ctrl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13px;font-weight:600;margin-bottom:8px;}
+  .ctrl label .val{font-family:"IBM Plex Mono",monospace;color:var(--emerald);font-size:14px;}
+  .valwrap{font-family:"IBM Plex Mono",monospace;color:var(--emerald);font-size:14px;white-space:nowrap;display:inline-flex;align-items:baseline;gap:2px;}
+  .valwrap .u{color:var(--muted);font-size:12px;}
+  .numin{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;color:var(--emerald);
+    font-size:15px;font-weight:600;width:56px;text-align:right;background:var(--paper);
+    border:1px solid var(--line-strong);border-radius:6px;padding:3px 6px;-moz-appearance:textfield;}
+  .numin.wide{width:88px;}
+  .numin:focus{outline:2px solid var(--emerald);outline-offset:1px;border-color:var(--emerald);}
+  .numin::-webkit-outer-spin-button,.numin::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .ctrl input[type=range]{width:100%;accent-color:var(--emerald);height:4px;}
+  .ctrl.annuity input[type=range]{accent-color:var(--b1);}
+  .ctrl.annuity .numin{color:var(--b1);}
+  .ctrl.annuity{background:var(--b1-bg);border-radius:10px;padding:10px 12px;margin:-10px -12px;}
+  .ctrl .hint{font-size:11.5px;color:var(--faint);margin-top:5px;}
+  .calctip{font-size:13px;background:var(--emerald-soft);color:var(--ink);border-radius:10px;
+    padding:11px 16px;margin:0 0 20px;border:1px solid var(--line);}
+  .calctip b{color:var(--emerald);}
+  .annuityline{padding:12px 26px;font-size:13.5px;background:var(--b1-bg);border-bottom:1px solid var(--line);color:var(--ink);}
+  .annuityline b{color:var(--b1);}
+  .annuityline span{color:var(--muted);}
+  .verdict{padding:24px 26px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  @media(max-width:680px){.verdict{grid-template-columns:1fr 1fr;}}
+  .verdict .v{display:flex;flex-direction:column;gap:3px;}
+  .verdict .v .l{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);}
+  .verdict .v .n{font-family:"Fraunces",serif;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;}
+  .statusbar{padding:16px 26px;font-size:14px;font-weight:500;display:flex;gap:10px;align-items:center;
+    border-top:1px solid var(--line);}
+  .statusbar.ok{background:var(--emerald-soft);color:var(--good);}
+  .statusbar.tight{background:var(--brass-soft);color:var(--warn);}
+  .statusbar.fail{background:#f6e3e0;color:var(--crit);}
+  :root[data-theme="dark"] .statusbar.fail,:root:not([data-theme="light"]) .statusbar.fail{background:#3a1e1b;}
+  .corpline{padding:12px 26px;font-size:13.5px;background:var(--paper);border-bottom:1px solid var(--line);
+    color:var(--muted);font-family:"IBM Plex Mono",monospace;}
+  .corpline b{color:var(--emerald);font-size:15px;}
+  .corpline span{color:var(--ink);font-weight:600;}
+
+  .mcpanel{padding:22px 26px 26px;border-top:1px solid var(--line);
+    background:linear-gradient(180deg,var(--card),var(--paper));}
+  .mc-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+    font-family:"Fraunces",serif;font-size:17px;font-weight:600;margin-bottom:18px;}
+  .mc-head .mc-sub{font-family:"IBM Plex Sans";font-size:12.5px;font-weight:400;color:var(--faint);}
+  .mc-badge{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;padding:4px 12px;border-radius:20px;}
+  .mc-badge.ok{background:var(--emerald-soft);color:var(--good);}
+  .mc-badge.warn{background:var(--brass-soft);color:var(--warn);}
+  .mc-badge.fail{background:#f6e3e0;color:var(--crit);}
+  :root[data-theme="dark"] .mc-badge.fail,:root:not([data-theme="light"]) .mc-badge.fail{background:#3a1e1b;}
+  .mc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px;}
+  @media(max-width:680px){.mc-stats{grid-template-columns:1fr 1fr;}}
+  .mc-stats .v{display:flex;flex-direction:column;gap:3px;}
+  .mc-stats .v .l{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);}
+  .mc-stats .v .n{font-family:"Fraunces",serif;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;}
+  #mcProb{color:var(--emerald);}
+  .mc-hist{display:flex;align-items:flex-end;gap:3px;height:110px;padding-top:6px;}
+  .mc-hist .bar{flex:1;background:var(--emerald);border-radius:3px 3px 0 0;min-height:2px;transition:height .2s ease;
+    position:relative;opacity:.88;}
+  .mc-hist .bar.dep{background:var(--crit);}
+  .mc-hist .bar.low{background:var(--brass);}
+  .mc-axis{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;
+    font-size:11px;color:var(--faint);margin-top:8px;}
+  .mc-caption{font-size:12px;color:var(--faint);margin-top:10px;max-width:70ch;}
+  .calc details{border-top:1px solid var(--line);}
+  .calc summary{padding:16px 26px;cursor:pointer;font-weight:600;font-size:14px;user-select:none;}
+  .calc summary:hover{color:var(--emerald);}
+  .projtbl{max-height:360px;overflow:auto;}
+
+  .flow{display:flex;flex-direction:column;gap:14px;}
+  .flow .step{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;}
+  .flow .step .mk{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:#fff;
+    background:var(--emerald);width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .flow .step .bd{padding-top:2px;}
+  .flow .step .bd b{font-size:15px;}
+  .flow .step .bd p{margin:4px 0 0;font-size:14px;color:var(--muted);max-width:64ch;}
+
+  .callout{border-left:3px solid var(--brass);background:var(--brass-soft);padding:16px 20px;border-radius:0 10px 10px 0;
+    font-size:14px;margin:20px 0;}
+  .callout b{color:var(--warn);}
+  .taxgrid{font-size:14px;}
+  .taxgrid td:first-child{font-weight:600;}
+
+  .formula{background:var(--ink);color:var(--paper);border-radius:var(--radius);padding:24px 26px;
+    font-family:"IBM Plex Mono",monospace;font-size:13.5px;line-height:1.9;overflow-x:auto;}
+  :root:not([data-theme="light"]) .formula,:root[data-theme="dark"] .formula{background:#0d120f;border:1px solid var(--line);}
+  .formula .c{color:var(--brass);}
+  .formula .g{color:var(--growth);}
+
+  .phase{margin-bottom:22px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);overflow:hidden;}
+  .phase-h{display:flex;align-items:center;gap:14px;padding:16px 22px;background:var(--paper);border-bottom:1px solid var(--line);}
+  .phase-h h3{font-size:17px;margin:0;}
+  .phase-tag{flex:none;font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:#fff;
+    background:var(--emerald);padding:4px 11px;border-radius:20px;letter-spacing:.03em;}
+  .checklist{list-style:none;margin:0;padding:8px 22px 18px;display:flex;flex-direction:column;gap:2px;}
+  .checklist li{border-bottom:1px solid var(--line);}
+  .checklist li:last-child{border-bottom:none;}
+  .checklist label{display:flex;gap:13px;align-items:flex-start;padding:13px 2px;cursor:pointer;font-size:14.5px;}
+  .checklist input[type=checkbox]{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--emerald);cursor:pointer;}
+  .checklist b{font-weight:600;}
+  .checklist i{color:var(--brass);font-style:italic;font-size:13px;}
+  .checklist input:checked + span{opacity:.55;text-decoration:line-through;text-decoration-color:var(--line-strong);}
+  .checklist input:checked + span i,.checklist input:checked + span b{text-decoration:line-through;}
+  .dodont{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px;}
+  @media(max-width:640px){.dodont{grid-template-columns:1fr;}}
+  .dodont > div{border-radius:14px;padding:20px 22px;border:1px solid var(--line);}
+  .dodont .dont{background:#f6e3e0;} .dodont .do{background:var(--emerald-soft);}
+  :root[data-theme="dark"] .dodont .dont,:root:not([data-theme="light"]) .dodont .dont{background:#2c1a18;}
+  .dodont h4{margin:0 0 10px;font-size:15px;}
+  .dodont .dont h4{color:var(--crit);} .dodont .do h4{color:var(--good);}
+  .dodont ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:7px;font-size:13.5px;}
+  .glossgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:640px){.glossgrid{grid-template-columns:1fr;}}
+  .gl{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;}
+  .gl b{color:var(--emerald);font-size:14.5px;}
+  .gl p{margin:5px 0 0;font-size:13px;color:var(--muted);}
+  footer{margin-top:72px;padding-top:28px;border-top:1px solid var(--line);font-size:12.5px;color:var(--faint);}
+  .disc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;font-size:13px;
+    color:var(--muted);margin-top:24px;}
+  .disc b{color:var(--ink);}
+  .paramtbl td:first-child{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--emerald);}
+  a.toc{color:var(--emerald);text-decoration:none;border-bottom:1px solid var(--line-strong);}
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <p class="eyebrow">निजी क्लाइंट · रिटायरमेंट आमदनी ब्लूप्रिंट</p>
+    <h1>ऐसा फंड जो आपसे ज़्यादा जिए, आप उससे पहले नहीं</h1>
+    <p class="lede">एक बकेट-आधारित निकासी रणनीति, जो पहले ही दिन से ₹1&nbsp;लाख/महीना देती है, हर पाँच साल पर बढ़ती है ताकि पैसे की खरीद-शक्ति बनी रहे, और 30 साल से ज़्यादा की अवधि तक ग्रोथ इंजन को बढ़ता रखती है।</p>
+    <div class="clientstrip">
+      <div><span class="k">निवेशक</span><span class="v">दंपती · उम्र 58 &amp; 54</span></div>
+      <div><span class="k">आमदनी का लक्ष्य</span><span class="v">₹1,00,000/माह शुद्ध · +20% / 5 साल</span></div>
+      <div><span class="k">अवधि</span><span class="v">30–35 साल · उम्र 88–90+ तक</span></div>
+      <div><span class="k">मकसद</span><span class="v">पहले सुरक्षा · कभी खत्म न हो</span></div>
+    </div>
+  </header>
+
+  <div class="plainbox">
+    <h2>आसान शब्दों में — पूरा प्लान 60 सेकंड में</h2>
+    <p>आप चाहते हैं <b>हर महीने ₹1 लाख</b>, जो समय के साथ बढ़े, <b>30 साल से ज़्यादा</b> तक — और कभी खत्म न हो। तरकीब है अपनी बचत को <b>चार बकेट</b> में बाँटना, हर एक का अपना काम:</p>
+    <div class="plaingrid">
+      <div><span class="pb b1">1</span><b>सुरक्षित आमदनी</b><p>सरकारी योजनाएँ &amp; बॉन्ड जो हर महीने/तिमाही आपको पैसे देते हैं — तनख्वाह की तरह। पहले 5 साल में इस्तेमाल होते हैं।</p></div>
+      <div><span class="pb b2">2</span><b>फिर से भरने वाला</b><p>थोड़ा ज़्यादा रिटर्न, फिर भी सुरक्षित फंड। हर साल चुपचाप बकेट 1 को फिर भर देता है।</p></div>
+      <div><span class="pb b3">3</span><b>बढ़ाने वाला</b><p>शेयर/इक्विटी। 10+ साल तक बिना छेड़े छोड़ दें ताकि यह इतना बढ़े कि आपकी आगे की बढ़ोतरी का खर्च उठा सके।</p></div>
+      <div><span class="pb b4">4</span><b>सुरक्षा जाल</b><p>मेडिकल बिल &amp; आपात-स्थिति के लिए अलग रखी रकम। महीने के खर्च के लिए इसे आप <em>कभी</em> नहीं छूते।</p></div>
+    </div>
+    <p style="margin-bottom:0;">हर साल आप ऊपर की बकेट से नीचे की बकेट भरते हैं — और आप <b>बाज़ार गिरने पर कभी शेयर नहीं बेचते</b>, क्योंकि बकेट 1 &amp; 2 में पहले से ही ~10 साल का खर्च मौजूद है। आमदनी के लिए आपको करीब <b>₹2.5 करोड़</b> + सुरक्षा जाल के लिए <b>₹40 लाख</b> ≈ कुल <b>₹2.9 करोड़</b> चाहिए। अगर दादा-दादी/नाना-नानी तैयार हों, तो वे अपनी वरिष्ठ नागरिक योजनाओं से इसका कुछ हिस्सा उठा सकते हैं (§3)। नीचे सब कुछ विस्तार से है — और §7 एक टिक-बॉक्स कामों की सूची है।</p>
+  </div>
+
+  <!-- ======================= 1. CORPUS SIZING ======================= -->
+  <section id="sizing">
+    <div class="sec-head"><span class="sec-num">01</span><h2>मूल पूँजी का आकार</h2></div>
+    <p class="sub">आज आपके पास कितना होना चाहिए। इसे असली निकासी की तरह बनाया गया है — हर साल की शुरुआत में पैसे निकाले जाते हैं, बची रकम मिले-जुले 8–9% सालाना पर बढ़ती है, और हर पाँच साल पर 20% आमदनी बढ़ती है ताकि ~3.7% जीवनशैली महँगाई के बराबर चले।</p>
+
+    <div class="band">
+      <div class="cell"><div class="lab">निश्चित न्यूनतम</div><div class="big">₹1.79 Cr</div><div class="cap">अगर हर साल बिल्कुल सही 9% मिले तो 30वें साल ₹0 पर खत्म। Monte-Carlo (मॉन्टे-कार्लो) में यह सिर्फ ~20% बार टिकता है — यह न्यूनतम है, प्लान नहीं।</div></div>
+      <div class="cell hl"><div class="lab">Monte-Carlo (मॉन्टे-कार्लो) मज़बूत लक्ष्य</div><div class="big">₹2.50 Cr</div><div class="cap">1,000 बेतरतीब रिटर्न रास्तों में ~90%+ टिकाव · R = 9%, σ = 6%, टैक्स-समायोजित। असल में यही आँकड़ा बनाना है।</div></div>
+      <div class="cell"><div class="lab">परिवार के साथ मिलाने पर</div><div class="big">₹2.10 Cr</div><div class="cap">आपका अपना हिस्सा, जब तैयार माता-पिता ~₹40 लाख मिला दें — वही ~90% मज़बूती, आप पर ₹40 लाख कम बोझ (देखें §3)।</div></div>
+    </div>
+    <div class="callout">
+      <b>₹2.50 करोड़ क्यों, ₹1.79 करोड़ क्यों नहीं — सीक्वेंस-रिस्क का सुधार।</b> न्यूनतम आँकड़ा मानकर चलता है कि हर एक साल बिल्कुल सही 9% मिले और ₹1L एक <em>कुल (gross)</em> निकासी है। हकीकत दोनों तोड़ देती है: (a) आपका ₹1L <b>टैक्स के बाद शुद्ध</b> है, इसलिए आप ~8% ज़्यादा कुल निकालते हैं; और (b) पहले 5–7 साल में खराब रिटर्न का दौर — <b>सीक्वेंस रिस्क</b> — ऐसे पोर्टफोलियो को भी डुबो सकता है जिसका <em>औसत</em> रिटर्न ठीक दिखता है। 1,000 बेतरतीब रास्ते चलाएँ (कैलकुलेटर, §5) तो ₹1.79 करोड़ ~5 में से 1 बार टिकता है; ₹2.25 करोड़ करीब 4 में से 3 बार; और ≥90% टिकाव तक पहुँचने के लिए, जो रिटायरमेंट में ज़रूरी है, ~<b>₹2.5 करोड़</b> लगते हैं। बकेट ढाँचा (§2) ही यह वापस कमा कर देता है — गिरावट वाले साल में इक्विटी बेचने की मजबूरी न होने से, असली रणनीति इस अकेले-पूल वाले अनुमान से बेहतर रहती है।
+    </div>
+    <div class="callout" style="border-color:var(--b4);background:var(--b4-bg);">
+      <b style="color:var(--b4)">सिर्फ आमदनी वाली रकम नहीं, कुल रकम पर ध्यान दें।</b> ऊपर बताई ₹2.5 करोड़ सिर्फ <em>महीने की आमदनी</em> के लिए है। एक पक्का प्लान सेहत और आकस्मिक ज़रूरतों के लिए <b>~₹40 लाख</b> और अलग रखता है (बकेट 4, §2) जिसे खर्च के लिए कभी नहीं निकालना — इसलिए <b>जुटाने वाली कुल पूँजी ~₹2.9 करोड़</b> है (या आपकी अपनी ~₹2.5 करोड़, जब माता-पिता ₹40 लाख मिला दें)। आगे की हर चीज़ — बकेट, अमल, टैक्स, कैलकुलेटर — ₹2.5 करोड़ आमदनी इंजन के हिसाब से बनी है; ₹40 लाख का रिज़र्व अलग है।
+    </div>
+
+    <h3 style="margin:38px 0 4px;font-size:19px;">संवेदनशीलता — ज़रूरी रकम बनाम आपका महीने का लक्ष्य</h3>
+    <p class="sub" style="margin-bottom:16px;">हर 5 साल पर 20% बढ़ोतरी · 30 साल की अवधि · शून्य तक खत्म होने के आधार पर। टैक्स + सुरक्षा गुंजाइश के लिए सुझाए गए कॉलम को ~25% बढ़ा लें।</p>
+    <div class="tblwrap"><table>
+      <thead><tr><th>मिला-जुला रिटर्न →<br>महीने का लक्ष्य ↓</th><th>सतर्क 8%</th><th>आधार 9%</th><th>आशावादी 10%</th><th>प्लानिंग लक्ष्य*</th></tr></thead>
+      <tbody>
+        <tr><td>₹75,000 / माह</td><td>₹1.49 करोड़</td><td>₹1.34 करोड़</td><td>₹1.22 करोड़</td><td>₹1.70 करोड़</td></tr>
+        <tr class="base"><td>₹1,00,000 / माह &nbsp;<span class="chip good">आधार</span></td><td>₹1.99 करोड़</td><td>₹1.79 करोड़</td><td>₹1.63 करोड़</td><td>₹2.25 करोड़</td></tr>
+        <tr><td>₹1,50,000 / माह</td><td>₹2.98 करोड़</td><td>₹2.69 करोड़</td><td>₹2.44 करोड़</td><td>₹3.40 करोड़</td></tr>
+        <tr><td>₹2,00,000 / माह</td><td>₹3.97 करोड़</td><td>₹3.58 करोड़</td><td>₹3.25 करोड़</td><td>₹4.50 करोड़</td></tr>
+      </tbody>
+    </table></div>
+    <p style="font-size:12.5px;color:var(--faint);margin-top:10px;">*प्लानिंग लक्ष्य = 8.5% मिश्रण पर शून्य-तक-खत्म वाला आँकड़ा, जिसे टैक्स के बोझ और एक शुरुआती गुंजाइश के लिए ~12–13% बढ़ाया गया। सच्ची ≥90% <b>Monte-Carlo (मॉन्टे-कार्लो)</b> मज़बूती के लिए ~10% और जोड़ें — ₹1L आधार पर यह करीब <b>₹2.5 करोड़</b> बैठता है। बाकी पंक्तियों पर भी वही ~1.1× बढ़ोतरी लगा लें।</p>
+
+    <div class="callout" style="border-color:var(--steel);background:var(--steel-soft);">
+      <b style="color:var(--steel)">आपने जो महँगाई बताई, उस पर एक बात।</b> हर 5 साल पर 20% बढ़ोतरी मिलाकर सिर्फ <b>~3.7% सालाना</b> बनती है, जो आपकी बताई 5–6% जीवनशैली महँगाई से कम है। सच में 5–6% बनाए रखने के लिए बढ़ोतरी हर 5 साल पर ~28–34% होनी चाहिए, जिससे आधार रकम ₹1.79 करोड़ से बढ़कर <b>₹2.02–2.22 करोड़</b> (खत्म-आधार पर) हो जाती है — यानी ₹2.5 करोड़ का प्लानिंग लक्ष्य। लाइव कैलकुलेटर (§6) में आप बढ़ोतरी घटा-बढ़ा कर देख सकते हैं कि रकम कैसे बदलती है।
+    </div>
+  </section>
+
+  <!-- ======================= 2. BUCKETS ======================= -->
+  <section id="buckets">
+    <div class="sec-head"><span class="sec-num">02</span><h2>चार-बकेट का ढाँचा</h2></div>
+    <p class="sub">समय के हिसाब से बाँटना मूल तनाव सुलझाता है: नज़दीकी समय का पैसा <em>सुरक्षित</em> होना चाहिए, लंबे समय का पैसा <em>बढ़ना</em> चाहिए। बकेट 1–3 मिलकर <b>आमदनी इंजन</b> बनाते हैं (₹2.5 करोड़, समय-अवधि के हिसाब से बँटा हुआ)। बकेट&nbsp;4 एक <b>अलग रखा गया सेहत &amp; आकस्मिक रिज़र्व</b> है (~₹40 लाख) जो <em>सबसे ऊपर</em> रहता है — महीने की आमदनी के लिए कभी नहीं निकाला जाता — क्योंकि भारतीय रिटायरमेंट को असल में तोड़ने वाले झटके मेडिकल और एक-बार वाले होते हैं, बाज़ार वाले नहीं। बँटवारा ₹2.5 करोड़ आमदनी रकम पर दिखाया गया है।</p>
+
+    <div class="allocbar">
+      <div style="width:34%;background:var(--b1);">बकेट 1 · 34%</div>
+      <div style="width:26%;background:var(--b2);">बकेट 2 · 26%</div>
+      <div style="width:40%;background:var(--b3);">बकेट 3 · 40%</div>
+    </div>
+    <p style="font-size:12.5px;color:var(--faint);margin:-14px 0 22px;">आमदनी रकम ₹2.5 करोड़ · ≈40% इक्विटी। बकेट 4 (नीचे) और ~₹40 लाख है, जो अलग रखी जाती है।</p>
+
+    <div class="grid3">
+      <div class="bucket b1">
+        <div class="top">
+          <span class="tag">बकेट 1 · सुरक्षा</span>
+          <h3>आमदनी + न्यूनतम</h3>
+          <div class="yrs">साल 1–5 + जीवनभर</div>
+          <div class="alloc">₹85 L <small>/ 34%</small></div>
+        </div>
+        <ul>
+          <li><b>SCSS (वरिष्ठ नागरिक बचत योजना)</b> — ₹30 लाख<span>8.2%, तिमाही, ₹30 लाख की सीमा/व्यक्ति। बड़े साथी को 60 पर (~2 साल) — या तैयार माता-पिता के ज़रिए <em>अभी</em> (§3)। 5 साल लॉक, +3 साल बढ़ा सकते हैं।</span></li>
+          <li><b>RBI फ्लोटिंग रेट बॉन्ड</b> — ₹20 लाख<span>8.05% (NSC+0.35%), छमाही, सरकारी, कोई सीमा नहीं। बड़े साथी के 60 होने तक SCSS का पुल।</span></li>
+          <li><b>POMIS (पोस्ट ऑफिस मंथली इनकम स्कीम)</b> — ₹15 लाख संयुक्त<span>7.4%, हर महीने भुगतान — हर महीने खाते में आता है।</span></li>
+          <li><b>लिक्विड / आर्बिट्राज फंड</b> — ₹10 लाख<span>वह रकम जो महीने की SWP को खिलाती है; आर्बिट्राज पर इक्विटी जैसा टैक्स।</span></li>
+          <li><b>संयुक्त-जीवन एन्युटी न्यूनतम</b> — अभी ~₹10 लाख, सीढ़ीनुमा<span>60/65/70 पर हिस्सों को <em>संयुक्त-जीवन, खरीद-मूल्य वापसी वाली</em> एन्युटी (LIC जीवन अक्षय ~7.5%) में बदलें ताकि जीवनभर के ज़रूरी खर्च का न्यूनतम पक्का हो जाए। यह तय रकम है, महँगाई से जुड़ी नहीं — सिर्फ ज़रूरी खर्च ढकें (§4)।</span></li>
+        </ul>
+      </div>
+      <div class="bucket b2">
+        <div class="top">
+          <span class="tag">बकेट 2 · बचाव</span>
+          <h3>मध्यम पुल</h3>
+          <div class="yrs">साल 6–15 · कम उतार-चढ़ाव</div>
+          <div class="alloc">₹65 L <small>/ 26%</small></div>
+        </div>
+        <ul>
+          <li><b>बैंकिंग &amp; PSU डेट फंड</b> — ₹20 लाख<span>AAA PSU/बैंक पेपर; बकेट 1 खाली होते ही उसे भरता है।</span></li>
+          <li><b>टारगेट-मैच्योरिटी फंड / G-Sec (सरकारी बॉन्ड)</b> — ₹18 लाख<span>आज का रिटर्न चुनी हुई तारीख तक बाँध देता है — दोबारा-निवेश का जोखिम खत्म (§4)।</span></li>
+          <li><b>मल्टी-एसेट / कंज़र्वेटिव हाइब्रिड</b> — ₹15 लाख<span>इक्विटी+डेट+सोना एक ही जगह; ≥65% इक्विटी = इक्विटी जैसा टैक्स।</span></li>
+          <li><b>REIT / InvIT हिस्सा</b> — ₹12 लाख<span>~7–9% रिटर्न, तिमाही, तय किराया-बढ़ोतरी के साथ (~5–15%/3 साल) — एक बनी-बनाई महँगाई बढ़ोतरी जो FD में नहीं होती। सहायक हिस्सा, मुख्य नहीं।</span></li>
+        </ul>
+      </div>
+      <div class="bucket b3">
+        <div class="top">
+          <span class="tag">बकेट 3 · बढ़ोतरी</span>
+          <h3>महँगाई इंजन</h3>
+          <div class="yrs">साल 11+ · इक्विटी</div>
+          <div class="alloc">₹100 L <small>/ 40%</small></div>
+        </div>
+        <ul>
+          <li><b>Nifty 50 + Next 50 इंडेक्स</b> — ₹42 लाख<span>कम लागत वाला मुख्य हिस्सा; SWP के ज़रिए आगे की बढ़ोतरी का खर्च देता है।</span></li>
+          <li><b>फ्लेक्सी-कैप फंड</b> — ₹30 लाख<span>मैनेजर हर आकार की कंपनियों में घूमता है; 10 साल+ का पैसा।</span></li>
+          <li><b>लार्ज &amp; मिड-कैप फंड</b> — ₹18 लाख<span>ग्रोथ के फायदे के लिए तय ≥35% मिड-कैप।</span></li>
+          <li><b>गोल्ड ETF / फंड-ऑफ-फंड</b> — ₹10 लाख<span>5–10% महँगाई/संकट से बचाव। SGB अब बंद हैं (फरवरी 2024 से कोई नई किस्त नहीं) → ETF इस्तेमाल करें; सोने पर अब 1 साल बाद 12.5% LTCG।</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bucket b4 wide">
+      <div class="top">
+        <span class="tag">बकेट 4 · सुरक्षा &nbsp;·&nbsp; नया</span>
+        <h3 style="margin:0;">सेहत &amp; आकस्मिक रिज़र्व</h3>
+        <div class="yrs">ज़रूरत पर · अलग रखा हुआ</div>
+        <div class="alloc" style="margin-left:auto;">~₹40 L <small>/ ₹2.5 करोड़ के ऊपर</small></div>
+      </div>
+      <div class="splitcols">
+        <ul>
+          <li><b>अलग मेडिकल रकम</b> — ₹25 लाख<span>लिक्विड/शॉर्ट-डेट में। बीमा के को-पे (वरिष्ठों पर 10–30%!), पहले से मौजूद बीमारी की वेटिंग-पीरियड के बिल, सब-लिमिट, और बढ़ते टॉप-अप प्रीमियम का खर्च देती है। मेडिकल महँगाई ~12–14% — आम महँगाई से करीब 2 गुना — इसलिए यह कभी आमदनी बकेट से न आए।</span></li>
+          <li><b>+ बेस हेल्थ फ्लोटर + सुपर टॉप-अप</b><span>प्रवेश-उम्र की खिड़की बंद होने से पहले <em>अभी</em> 54/58 पर लें: ~₹10–15 लाख बेस + ~₹50 लाख–₹1 करोड़ सुपर टॉप-अप (₹10 लाख डिडक्टिबल) एक बड़ी पॉलिसी से कहीं सस्ता है।</span></li>
+        </ul>
+        <ul>
+          <li><b>आपात / आकस्मिक फंड</b> — ₹15 लाख<span>12–24 महीने का ज़रूरी खर्च लिक्विड/ओवरनाइट फंड या स्वीप-FD में। छत, गाड़ी, परिवार के झटके को सँभालता है — ताकि आमदनी की रकम पर कभी हाथ न पड़े।</span></li>
+          <li><b>बिलकुल अलग रखा हुआ</b><span>मेडिकल रकम से अलग मकसद — दोनों को न मिलाएँ। यह बकेट ₹2.5 करोड़ से <em>अलग और अतिरिक्त</em> पूँजी है, जिससे जुटाने वाली कुल पूँजी ~₹2.9 करोड़ हो जाती है।</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:24px;">
+      <b>ग्लाइड पाथ।</b> यह 34/26/40 बँटवारा (≈40% इक्विटी) जल्दी रिटायरमेंट की 30 साल की अवधि के लिए ठीक है। उम्र बढ़ने के साथ यह अपने-आप कम जोखिम वाला होता जाता है — हर बार जब बकेट 3, बकेट 1/2 को भरता है, इक्विटी घटती है। 75 की उम्र तक पोर्टफोलियो बिना एक भी मजबूरी की बिक्री के ~25–30% इक्विटी की ओर आ जाता है।
+    </div>
+  </section>
+
+  <!-- ======================= 3. FAMILY POOLING ======================= -->
+  <section id="pooling">
+    <div class="sec-head"><span class="sec-num">03</span><h2>परिवार का साथ — वरिष्ठों की पात्रता का इस्तेमाल</h2></div>
+    <p class="sub">आपकी अपनी वरिष्ठ-नागरिक सुविधा उम्र से बँधी है: बड़ा साथी SCSS के लिए 60 पर ही पात्र होता है (~2 साल दूर), छोटा 60 पर (~6 साल दूर)। जो माता-पिता <em>पहले से</em> वरिष्ठ या अति-वरिष्ठ नागरिक हैं वे <b>आज</b> पात्र हैं, और हर एक की अपनी प्रति-व्यक्ति योजना सीमा होती है। साफ पारिवारिक सहमति के साथ, बकेट&nbsp;1 का एक हिस्सा तैयार माता-पिता के ज़रिए लगाना दो काम एक साथ करता है — और जहाँ माता-पिता अपनी पूँजी भी लगाएँ, वहाँ यह उस रकम को घटा देता है जो आपको खुद जुटानी है।</p>
+
+    <div class="grid2" style="margin-bottom:24px;">
+      <div class="card" style="border-top:4px solid var(--b1);">
+        <h3 style="font-size:18px;margin:0 0 8px;">1 · पहुँच, पहले मिल गई</h3>
+        <p style="font-size:14px;color:var(--muted);margin:0;">SCSS ~8.2% सरकारी, तिमाही देती है — उपलब्ध सबसे अच्छी पक्की दर। आप इसे 60 से पहले नहीं खोल सकते; 62 या 82 साल के माता-पिता इसी हफ्ते खोल सकते हैं। उनकी पात्रता से बकेट&nbsp;1 की सबसे ज़्यादा रिटर्न वाली परत <em>अभी</em> भर सकती है, बजाय दो साल तक कम रिटर्न वाले विकल्पों में रखने के।</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--b2);">
+        <h3 style="font-size:18px;margin:0 0 8px;">2 · क्षमता, बढ़ी हुई</h3>
+        <p style="font-size:14px;color:var(--muted);margin:0;">हर योजना की सीमा <em>प्रति व्यक्ति</em> है। हर पात्र माता-पिता दंपती की अपनी सीमा के ऊपर ₹30 लाख SCSS की नई गुंजाइश और एक नई POMIS सीमा जोड़ते हैं — जिससे रकम का ज़्यादा हिस्सा टैक्स वाली FD के बजाय सबसे सुरक्षित, सबसे ज़्यादा रिटर्न वाली वरिष्ठ योजनाओं में रह सकता है।</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:19px;margin:0 0 12px;">प्रति वरिष्ठ योजना क्षमता</h3>
+    <div class="tblwrap"><table>
+      <thead><tr><th>योजना</th><th>प्रति-व्यक्ति क्षमता</th><th>अनुमानित दर</th><th>उम्र की शर्त / नोट</th></tr></thead>
+      <tbody>
+        <tr><td>SCSS (वरिष्ठ नागरिक बचत)</td><td>₹30 लाख</td><td>~8.2% · तिमाही</td><td style="text-align:left">60+ · 5 साल लॉक, 3 साल बढ़ा सकते हैं</td></tr>
+        <tr><td>POMIS (पोस्ट ऑफिस MIS)</td><td>₹9 लाख अकेले / ₹15 लाख संयुक्त</td><td>7.4% · मासिक</td><td style="text-align:left">कोई वरिष्ठ शर्त नहीं, पर साथ अच्छा चलता है</td></tr>
+        <tr><td>वरिष्ठ नागरिक बैंक FD</td><td>कोई सीमा नहीं</td><td>बेस पर +0.25–0.50%</td><td style="text-align:left">60+; कई बैंकों में 80+ को सबसे ऊँची स्लैब मिलती है</td></tr>
+        <tr><td>RBI फ्लोटिंग रेट बॉन्ड</td><td>कोई सीमा नहीं</td><td>~8.05% · छमाही</td><td style="text-align:left">कोई उम्र शर्त नहीं — दंपती भी रख सकते हैं</td></tr>
+      </tbody>
+    </table></div>
+    <p style="font-size:12.5px;color:var(--faint);margin-top:10px;">नोट: कोई अलग "अति-वरिष्ठ" <em>निवेश</em> योजना नहीं है — SCSS की पात्रता 60+ है। 80+ अति-वरिष्ठ का फायदा एक ऊँची FD ब्याज स्लैब और (टैक्स अलग) बड़ी छूटें हैं। दरें 2026 के अनुसार; मौजूदा अधिसूचनाओं से जाँच लें।</p>
+
+    <h3 style="font-size:19px;margin:36px 0 4px;">उदाहरण स्थिति — "माता-पिता भी मदद कर रहे हैं"</h3>
+    <p class="sub" style="margin-bottom:16px;">दो तैयार वरिष्ठ-नागरिक माता-पिता: वे परिवार के पूल के लिए अपने नाम पर SCSS खोलते हैं, और अपनी बचत का एक हिस्सा देते हैं। आँकड़े उदाहरण के लिए — योगदान को कैलकुलेटर के <b>माता-पिता की मिलाई पूँजी</b> स्लाइडर में लाइव देखें।</p>
+    <div class="band">
+      <div class="cell"><div class="lab">तुरंत खुली SCSS</div><div class="big">₹60 L</div><div class="cap">2 माता-पिता × ₹30 लाख ~8.2% पर, अभी उपलब्ध — वरना बड़ा साथी ~2 साल इंतज़ार करता</div></div>
+      <div class="cell hl"><div class="lab">माता-पिता की अपनी मिलाई पूँजी</div><div class="big">₹40 L</div><div class="cap">परिवार की रकम में उनका योगदान, उनकी ज़्यादा रिटर्न वाली वरिष्ठ योजनाओं में रखा</div></div>
+      <div class="cell"><div class="lab">दंपती को खुद जुटाना है</div><div class="big">₹2.10 Cr</div><div class="cap">बनाम अकेले 90% टिकाव के लिए ~₹2.5 करोड़ — ₹40 लाख का पूल एक पूरी रकम-परत वापस दिला देता है</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin:16px 0 0;max-width:70ch;">Monte-Carlo (मॉन्टे-कार्लो) के हिसाब से (कैलकुलेटर §5): दंपती <em>अकेले</em> ₹2.10 करोड़ पर ~60% रास्तों में टिकता है; माता-पिता के ₹40 लाख जोड़ें तो ₹2.50 करोड़ की चालू रकम <b>~92%</b> पार कर जाती है। ₹40 लाख का पारिवारिक योगदान करीब ₹40 लाख जितना भारी काम करता है — और दंपती के पात्र होने से कई साल पहले ही सबसे ऊँची दर वाली सरकारी आमदनी खोल देता है।</p>
+
+    <div class="callout" style="border-color:var(--crit);background:#f6e3e0;">
+      <b style="color:var(--crit)">माता-पिता के ज़रिए एक रुपया लगाने से पहले यह पढ़ें।</b> माता-पिता के नाम पर रखा पैसा <b>कानूनन उन्हीं का</b> है। उनके गुज़र जाने पर यह उनकी वसीयत या उत्तराधिकार कानून से बँटता है — और आपके बजाय दूसरे वारिसों (आपके भाई-बहन) को जा सकता है। पूल सिर्फ साफ, लिखित पारिवारिक समझ के साथ करें: मिलती-जुलती वसीयतें, हर खाते पर सही <b>नॉमिनेशन</b>, और बेहतर हो तो उत्तरजीविता (survivorship) होल्डिंग। प्रति-व्यक्ति कानूनी सीमाओं का पालन करें, और पहले माता-पिता की अपनी आमदनी की ज़रूरतें पूरी रखें — यह उनका सुरक्षा जाल है, सिर्फ आपका नहीं। क्लबिंग/टैक्स की बारीकी अपने CA पर छोड़ें।
+    </div>
+  </section>
+
+  <!-- ======================= 4. RISK DEFENCES ======================= -->
+  <section id="risks">
+    <div class="sec-head"><span class="sec-num">04</span><h2>जोखिम से बचाव — 3-बकेट प्लान जो कमियाँ छोड़ देता है</h2></div>
+    <p class="sub">बकेट <em>बाज़ार</em> के जोखिम को हरा देते हैं। पर भारतीय रिटायरमेंट को असल में तोड़ने वाले जोखिम वही हैं जिन्हें सिर्फ निकासी वाला प्लान अनदेखा करता है: मेडिकल महँगाई, पैसे से ज़्यादा जीना, पीछे बचा साथी, और गिरती दरें। हर एक को अपना बचाव चाहिए।</p>
+
+    <div class="grid2">
+      <div class="card" style="border-top:4px solid var(--b4);">
+        <h3 style="font-size:18px;margin:0 0 6px;">🩺 &nbsp;मेडिकल महँगाई (~12–14%)</h3>
+        <p style="font-size:14px;color:var(--muted);margin:0;">आम महँगाई से करीब 2 गुना — खर्च हर 5 साल में करीब दोगुना। <b>बचाव:</b> बकेट 4 की ₹25 लाख मेडिकल रकम + एक बेस फ्लोटर और ₹50 लाख–₹1 करोड़ सुपर-टॉप-अप जो <em>अभी</em> लिया जाए (प्रवेश-उम्र की खिड़की ~65 के बाद तंग होती है)। 10–30% वरिष्ठ को-पे और 48 महीने तक की पहले-से-मौजूद बीमारी की प्रतीक्षा का बजट रखें — रकम ठीक इन्हीं को सँभालती है।</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--b1);">
+        <h3 style="font-size:18px;margin:0 0 6px;">⏳ &nbsp;85–90 से ज़्यादा उम्र</h3>
+        <p style="font-size:14px;color:var(--muted);margin:0;">सिर्फ निकासी वाले प्लान में अगर कोई भी साथी 90+ पहुँचे तो रकम खत्म होने की संभावना रहती है। <b>बचाव:</b> एक <em>संयुक्त-जीवन, खरीद-मूल्य वापसी वाली</em> एन्युटी (LIC जीवन अक्षय ~7.5%, या NPS) सिर्फ ज़रूरी खर्च जितनी, 60/65/70 पर हिस्सों में खरीदी (उम्र के साथ दरें बढ़ती हैं)। मान लें कि यह एक <b>तय</b> न्यूनतम है — कोई भारतीय एन्युटी 6% महँगाई के बराबर नहीं चलती — इसलिए असली ग्रोथ के लिए इक्विटी बनाए रखें।</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--b2);">
+        <h3 style="font-size:18px;margin:0 0 6px;">👥 &nbsp;पीछे बचे साथी की कमी</h3>
+        <p style="font-size:14px;color:var(--muted);margin:0;">4 साल का उम्र अंतर मतलब छोटा साथी (54) 6+ साल अकेले सँभाल सकता है — आँकड़ों के हिसाब से और ज़्यादा। <b>बचाव:</b> सिर्फ <em>संयुक्त-जीवन</em> एन्युटी (कभी अकेले-जीवन वाली नहीं); पक्का करें कि पीछे बचे साथी पर हेल्थ कवर चलता रहे; पहले से SWP आदेश और आसान लिखित निर्देश सेट करें ताकि साथी आपके बिना पोर्टफोलियो चला सके।</p>
+      </div>
+      <div class="card" style="border-top:4px solid var(--b3);">
+        <h3 style="font-size:18px;margin:0 0 6px;">📉 &nbsp;दोबारा-निवेश का जोखिम</h3>
+        <p style="font-size:14px;color:var(--muted);margin:0;">SCSS/FD ऐसी दुनिया में मैच्योर हो सकते हैं जहाँ दरें कम हों, जिससे आमदनी घट जाए। <b>बचाव:</b> मैच्योरिटी को अलग-अलग अवधियों में सीढ़ीनुमा रखें; बकेट 2 में आज का रिटर्न बाँधने के लिए <b>टारगेट-मैच्योरिटी डेट फंड / लंबी अवधि के G-Sec</b> इस्तेमाल करें; और अगर लंबी अवधि की दरें अच्छी दिखें तो एन्युटी न्यूनतम जल्दी खरीद लें।</p>
+      </div>
+    </div>
+
+    <div class="callout" style="border-color:var(--crit);background:#f6e3e0;margin-top:22px;">
+      <b style="color:var(--crit)">वसीयत &amp; नॉमिनेशन — वह ₹0 खर्च वाली कमी जो ज़्यादातर लोग छोड़ देते हैं।</b> भारत में <b>नॉमिनी सिर्फ रखवाला है, कानूनी वारिस नहीं</b> — नॉमिनेशन उत्तराधिकार कानून के ऊपर <em>नहीं</em> होता। यह करके रखें: हर साथी के लिए एक <b>रजिस्टर्ड वसीयत</b>; हर बैंक, डीमैट और MF खाते पर <b>"Either or Survivor"</b> / संयुक्त होल्डिंग; सभी खातों, बीमा और NPS पर ताज़ा <b>नॉमिनेशन</b>; और एक छोटी नकदी गुंजाइश ताकि ट्रांसमिशन/प्रोबेट के दौरान पीछे बचा साथी नकदी के लिए न तरसे।
+    </div>
+  </section>
+
+  <!-- ======================= 5. EXECUTION ======================= -->
+  <section id="execution">
+    <div class="sec-head"><span class="sec-num">05</span><h2>अमल &amp; निकासी ब्लूप्रिंट</h2></div>
+    <p class="sub">रकम अपने-आप तनख्वाह नहीं देती। यहाँ बिलकुल साफ है कि हर महीने की 1 तारीख को ₹1,00,000 आपके बैंक में कैसे आता है, और बकेट एक-दूसरे को कैसे भरते हैं ताकि यह मशीन 30 साल चले।</p>
+
+    <h3 style="font-size:19px;margin-bottom:14px;">महीने का ₹1L कैसे जुटता है</h3>
+    <div class="card flow">
+      <div class="step"><div class="mk">1</div><div class="bd"><b>ब्याज की पटरियाँ आधार भार उठाती हैं (~₹55–65 हज़ार/माह)</b><p>SCSS &amp; RBI बॉन्ड <em>तिमाही</em> देते हैं; POMIS <em>मासिक</em> देता है। इन सबको एक ही अलग <b>"आमदनी" बचत खाते</b> में भेजें — कभी अपने रोज़मर्रा के खाते में नहीं — ताकि नकदी का बहाव दिखे और जाँचा जा सके।</p></div></div>
+      <div class="step"><div class="mk">2</div><div class="bd"><b>एक SWP बाकी पूरा करती है (~₹35–45 हज़ार/माह)</b><p>लिक्विड/आर्बिट्राज फंड (बकेट 1) से उसी आमदनी खाते में 1 तारीख को एक तय-तारीख वाली <b>सिस्टेमैटिक विदड्रॉल प्लान (SWP)</b> सेट करें। यह तिमाही ब्याज के उतार-चढ़ाव को एक बराबर मासिक आँकड़े में बदल देती है।</p></div></div>
+      <div class="step"><div class="mk">3</div><div class="bd"><b>एक स्टैंडिंग इंस्ट्रक्शन "तनख्वाह" देती है</b><p>1 तारीख को एक ऑटो-स्वीप ठीक ₹1,00,000 आमदनी खाते से आपके खर्च खाते में भेजती है। आमदनी खाते में मौजूद गुंजाइश समय के फर्क को सँभाल लेती है।</p></div></div>
+    </div>
+
+    <h3 style="font-size:19px;margin:38px 0 14px;">सालाना पुनर्संतुलन &amp; भराई — झरना</h3>
+    <div class="card flow">
+      <div class="step"><div class="mk">↓</div><div class="bd"><b>हर साल, एक तय समीक्षा तारीख पर, नीचे की ओर झरना बहाएँ</b><p>बकेट 3 (इक्विटी) का मुनाफा → बकेट 2 को भरें। बकेट 2 → बकेट 1 को पूरे 5 साल के खर्च तक भरें। नकदी जोखिम की सीढ़ी में <em>नीचे</em> बहती है, ऊपर कभी नहीं।</p></div></div>
+      <div class="step"><div class="mk">✓</div><div class="bd"><b>अच्छे इक्विटी साल में, फसल काटें</b><p>अगर Nifty ज़ोरदार ऊपर है, तो बकेट 3 से मुनाफा निकालकर बकेट 1/2 फिर बनाएँ — आप इक्विटी ऊँचे पर बेच रहे हैं। यही आपकी LTCG-हार्वेस्टिंग की खिड़की भी है (नीचे टैक्स देखें)।</p></div></div>
+      <div class="step"><div class="mk">✕</div><div class="bd"><b>खराब इक्विटी साल में, इक्विटी मत बेचें</b><p>बकेट का पूरा मकसद यही है: 8वें साल बाज़ार गिरे तो आप पर असर नहीं पड़ता, क्योंकि बकेट 1 &amp; 2 में ~10 साल का खर्च है। आप बकेट 3 को सँभलने देते हैं और सुरक्षित संपत्ति से निकालते हैं। यह सीक्वेंस-ऑफ-रिटर्न्स जोखिम को हरा देता है।</p></div></div>
+      <div class="step"><div class="mk">⟳</div><div class="bd"><b>भराई ट्रिगर से, कैलेंडर की मजबूरी से नहीं</b><p>मोटा नियम: बकेट 1 में ≥ 3 साल का खर्च और बकेट 1+2 में ≥ 8–10 साल रखें। बकेट 1 को इक्विटी से तभी भरें जब बकेट 3 अपने लक्ष्य वज़न पर या उससे ऊपर हो।</p></div></div>
+    </div>
+
+    <h3 style="font-size:19px;margin:38px 0 14px;">टैक्स रणनीति — बोझ कम करें (वित्त वर्ष 2026-27)</h3>
+    <div class="callout" style="border-color:var(--emerald);background:var(--emerald-soft);margin-top:0;">
+      <b style="color:var(--emerald)">पहले रिजीम का फैसला — और यह उल्टा लगता है।</b> मन करता है वरिष्ठ-वालों की <b>§80TTB</b> (₹50 हज़ार ब्याज छूट) और ₹3L/₹5L की बुनियादी छूटों के पीछे भागें — पर वे <em>सिर्फ पुरानी रिजीम में</em> हैं। इसके बजाय <b>नई रिजीम</b> (डिफ़ॉल्ट) <b>प्रति व्यक्ति ₹12 लाख तक की आमदनी को शून्य-टैक्स</b> बना देती है (₹75 हज़ार स्टैंडर्ड डिडक्शन के साथ ≈₹12.75 लाख, §87A रिबेट के ज़रिए)। ब्याज पर ज़्यादा निर्भर रिटायर के लिए यह चौड़ा बैंड ज़्यादातर मामलों में पुरानी रिजीम के ₹3L + ₹50 हज़ार से बेहतर है। <b>आपकी ₹12 लाख/साल आमदनी की ज़रूरत, दो साथियों में बँटकर, काफी हद तक दो शून्य-टैक्स बैंड में समा जाती है।</b> हर साल अपने CA के साथ दोनों रिजीम चलाएँ — पर यहाँ नई रिजीम के जीतने की संभावना ज़्यादा है।
+    </div>
+    <div class="tblwrap"><table class="taxgrid">
+      <thead><tr><th>आमदनी का स्रोत</th><th>टैक्स नियम · वित्त वर्ष 2026-27</th><th>प्लानिंग कदम</th></tr></thead>
+      <tbody>
+        <tr><td>SCSS / POMIS / FD / RBI-बॉन्ड ब्याज</td><td style="text-align:left">स्लैब। पर नई रिजीम में, §87A रिबेट के बाद ~₹12.75 लाख/व्यक्ति तक की सामान्य आमदनी शून्य।</td><td style="text-align:left"><b>दोनों साथियों में साधन बाँटें</b> ताकि हर एक शून्य/कम बैंड में रहे। वरिष्ठ TDS सिर्फ <b>₹1L/बैंक</b> से ऊपर लगता है; अगर शुद्ध देनदारी शून्य हो तो <b>फॉर्म 15H</b> भरें।</td></tr>
+        <tr><td>इक्विटी-फंड SWP (बकेट 3)</td><td style="text-align:left">सिर्फ <em>मुनाफे</em> वाले हिस्से पर टैक्स। LTCG (&gt;1 साल) <b>12.5%</b>, <b>₹1.25L/साल</b> से ऊपर; STCG 20%। नोट: ₹12L रिबेट इन मुनाफों को <em>नहीं</em> बचाता।</td><td style="text-align:left">टॉप-अप के लिए इक्विटी SWP चुनें — बेची गई हर यूनिट का ज़्यादातर हिस्सा मूल पूँजी की वापसी होता है। दो फोलियो = <b>दो ₹1.25L छूटें</b>। हर साल प्रति व्यक्ति ₹1.25L मुनाफा हार्वेस्ट करें।</td></tr>
+        <tr><td>डेट / टारगेट-मैच्योरिटी फंड (बकेट 2)</td><td style="text-align:left">स्लैब (अप्रैल-2023 के बाद की यूनिट, इंडेक्सेशन नहीं) — पर टैक्स तब तक टलता है जब तक आप भुनाते नहीं।</td><td style="text-align:left">ग्रोथ विकल्प चुनें, IDCW नहीं; कम आमदनी वाले सालों में भुनाएँ। टालना ही फायदा है।</td></tr>
+        <tr><td>गोल्ड ETF / फंड (बकेट 3)</td><td style="text-align:left">अप्रैल-2025 को या उसके बाद खरीदी यूनिट: 1 साल बाद <b>12.5% LTCG</b> (इंडेक्सेशन नहीं)।</td><td style="text-align:left">रियायती दर के लिए &gt;12 महीने रखें।</td></tr>
+        <tr><td>मल्टी-एसेट / REIT / आर्बिट्राज</td><td style="text-align:left">मल्टी-एसेट ≥65% इक्विटी → इक्विटी टैक्स (12.5%)। REIT भुगतान के हिस्से स्लैब पर। आर्बिट्राज = इक्विटी टैक्स।</td><td style="text-align:left">इक्विटी वाले नियम के लिए बकेट 1 की SWP रकम को <b>आर्बिट्राज</b> में रखें; REIT को छोटा हिस्सा रखें।</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><b>मूल टैक्स समझ:</b> ₹1L/महीना = ₹12L/साल। नई रिजीम में दो लोगों में बाँटें, तो ब्याज का आधार भार करीब-करीब पूरा शून्य/कम-टैक्स बैंड में बैठ सकता है, जबकि इक्विटी-SWP टॉप-अप पर सिर्फ उसके मुनाफे वाले हिस्से पर टैक्स लगता है — जिसे दो ₹1.25L LTCG छूटें और बचा लेती हैं। मिलाकर, एक दंपती <b>असरदार टैक्स को कम, इकाई अंकों में</b> रख सकता है, इसलिए ₹1L <em>शुद्ध</em> के लिए सिर्फ ~₹1.05–1.10L कुल चाहिए, ₹1.3L+ नहीं। <b>ध्यान दें:</b> नई रिजीम का ₹60 हज़ार रिबेट LTCG/STCG की खास-दर वाले टैक्स को कभी कम नहीं करता — उन्हें अलग से प्लान करें। नया <b>इनकम-टैक्स एक्ट 2025</b> (1 अप्रैल 2026 से लागू) इन धाराओं के नंबर बदल सकता है; मतलब वही रहेगा — लेबल अपने CA से पक्के करें।</div>
+  </section>
+
+  <!-- ======================= 6. CALCULATOR ======================= -->
+  <section id="calc">
+    <div class="sec-head"><span class="sec-num">06</span><h2>लाइव टिकाऊपन कैलकुलेटर + Monte-Carlo (मॉन्टे-कार्लो)</h2></div>
+    <p class="sub">मॉडल, इंटरैक्टिव बना दिया गया। स्लाइडर हिलाएँ — साल-दर-साल अनुमान, निश्चित नतीजा, और 1,000-रास्तों वाला Monte-Carlo (मॉन्टे-कार्लो) तनाव परीक्षण तुरंत दोबारा गणना करते हैं। यह सिम सिर्फ <em>आमदनी इंजन</em> को कवर करती है; अलग रखा गया सेहत &amp; आकस्मिक रिज़र्व कुल पूँजी में जुड़ता है पर कभी नहीं निकाला जाता। ऊपर का हर आँकड़ा इसी इंजन से निकाला गया है।</p>
+
+    <div class="calc">
+      <p class="calctip">✎ <b>टाइप करें या खींचें।</b> नीचे का हर बॉक्स बदला जा सकता है — किसी नंबर पर क्लिक करके टाइप करें, या स्लाइडर खींचें। सब कुछ तुरंत दोबारा गणना होता है। यहाँ आप जो करते हैं वह कहीं सेव या भेजा नहीं जाता।</p>
+      <div class="controls">
+        <div class="ctrl"><label>दंपती की अपनी रकम <span class="valwrap">₹<input type="number" class="numin" id="C_n" min="100" max="500" step="5" value="210"><span class="u">L</span></span></label>
+          <input type="range" id="C" min="100" max="500" step="5" value="210"><div class="hint">जो आप खुद निवेश करते हैं (₹ लाख में)</div></div>
+        <div class="ctrl"><label>माता-पिता की मिलाई पूँजी <span class="valwrap">₹<input type="number" class="numin" id="P_n" min="0" max="150" step="5" value="40"><span class="u">L</span></span></label>
+          <input type="range" id="P" min="0" max="150" step="5" value="40"><div class="hint">दंपती को अकेले देखने के लिए 0 करें</div></div>
+        <div class="ctrl annuity"><label>एन्युटी न्यूनतम (जीवनभर पक्का) <span class="valwrap">₹<input type="number" class="numin" id="A_n" min="0" max="120" step="5" value="0"><span class="u">L</span></span></label>
+          <input type="range" id="A" min="0" max="120" step="5" value="0"><div class="hint">पेंशन में डाला गया पैसा @7%। ₹50L आज़माएँ → अदला-बदली देखें।</div></div>
+        <div class="ctrl"><label>आप जितनी आमदनी चाहते हैं / महीना <span class="valwrap">₹<input type="number" class="numin wide" id="I_n" min="50000" max="250000" step="5000" value="100000"></span></label>
+          <input type="range" id="I" min="50000" max="250000" step="5000" value="100000"><div class="hint">पहले साल में, हाथ में आने वाली</div></div>
+        <div class="ctrl"><label>हर 5 साल पर बढ़ोतरी <span class="valwrap"><input type="number" class="numin" id="S_n" min="0" max="40" step="1" value="20"><span class="u">%</span></span></label>
+          <input type="range" id="S" min="0" max="40" step="1" value="20"><div class="hint">20% ≈ 3.7%/साल · 34% ≈ 6%/साल महँगाई</div></div>
+        <div class="ctrl"><label>अपेक्षित रिटर्न / साल <span class="valwrap"><input type="number" class="numin" id="R_n" min="6" max="12" step="0.5" value="9"><span class="u">%</span></span></label>
+          <input type="range" id="R" min="6" max="12" step="0.5" value="9"><div class="hint">सभी बकेट का औसत</div></div>
+        <div class="ctrl"><label>बाज़ार के उतार-चढ़ाव <span class="valwrap"><input type="number" class="numin" id="V_n" min="2" max="20" step="1" value="6"><span class="u">%</span></span></label>
+          <input type="range" id="V" min="2" max="20" step="1" value="6"><div class="hint">रिटर्न कितने ऊबड़-खाबड़ हैं · इस मिश्रण के लिए ~6%</div></div>
+        <div class="ctrl"><label>कितने साल <span class="valwrap"><input type="number" class="numin" id="N_n" min="20" max="40" step="1" value="32"><span class="u">yrs</span></span></label>
+          <input type="range" id="N" min="20" max="40" step="1" value="32"><div class="hint">32 साल → उम्र 86 / 90 तक</div></div>
+        <div class="ctrl"><label>टैक्स के लिए अतिरिक्त <span class="valwrap"><input type="number" class="numin" id="T_n" min="0" max="25" step="1" value="8"><span class="u">%</span></span></label>
+          <input type="range" id="T" min="0" max="25" step="1" value="8"><div class="hint">टैक्स के लिए थोड़ा ज़्यादा निकालें</div></div>
+        <div class="ctrl"><label>सेहत &amp; आपात रिज़र्व <span class="valwrap">₹<input type="number" class="numin" id="H_n" min="0" max="100" step="5" value="40"><span class="u">L</span></span></label>
+          <input type="range" id="H" min="0" max="100" step="5" value="40"><div class="hint">बकेट 4 · अलग रखा, आमदनी पर कभी खर्च नहीं</div></div>
+      </div>
+
+      <div class="corpline" id="corpline">आमदनी रकम: <b id="clTotal">—</b> &nbsp;=&nbsp; आप <span id="clYou">—</span> + माता-पिता <span id="clPar">—</span> &nbsp;·&nbsp; + रिज़र्व <span id="clRes">—</span> &nbsp;⟶&nbsp; जुटाने वाली कुल <b id="clCap">—</b></div>
+      <div class="annuityline" id="annuityline" hidden>🛡️ एन्युटी न्यूनतम: <b id="anMo">—</b>/महीना <span>जीवनभर पक्का</span> — पहले साल की आमदनी का <b id="anPct">—</b> ढकता है, और रकम खत्म होने पर भी देता रहता है।</div>
+
+      <div class="verdict">
+        <div class="v"><span class="l">आखिरी बची रकम</span><span class="n" id="oEnd">—</span></div>
+        <div class="v"><span class="l">सबसे कम बची रकम</span><span class="n" id="oMin">—</span></div>
+        <div class="v"><span class="l">कुल दिया गया</span><span class="n" id="oPaid">—</span></div>
+        <div class="v"><span class="l">टिकाऊपन</span><span class="n" id="oProb">—</span></div>
+      </div>
+
+      <div class="statusbar" id="status">—</div>
+
+      <div class="mcpanel">
+        <div class="mc-head">
+          <span>Monte-Carlo (मॉन्टे-कार्लो) तनाव परीक्षण <span class="mc-sub">· 1,000 बेतरतीब रिटर्न रास्ते · सीक्वेंस जोखिम शामिल</span></span>
+          <span class="mc-badge" id="mcBadge">—</span>
+        </div>
+        <div class="mc-stats">
+          <div class="v"><span class="l">सफलता की संभावना</span><span class="n" id="mcProb">—</span></div>
+          <div class="v"><span class="l">कमज़ोर स्थिति · P10</span><span class="n" id="mcP10">—</span></div>
+          <div class="v"><span class="l">मध्यमान · P50</span><span class="n" id="mcP50">—</span></div>
+          <div class="v"><span class="l">मज़बूत स्थिति · P90</span><span class="n" id="mcP90">—</span></div>
+        </div>
+        <div class="mc-histwrap">
+          <div class="mc-hist" id="mcHist"></div>
+          <div class="mc-axis"><span>खत्म</span><span id="mcAxMid">—</span><span id="mcAxMax">—</span></div>
+          <div class="mc-caption">1,000 रास्तों में आखिरी बची रकम का बँटवारा। लाल पट्टी = वे रास्ते जो अवधि खत्म होने से पहले खत्म हो गए।</div>
+        </div>
+      </div>
+
+      <details>
+        <summary>▸ साल-दर-साल अनुमान</summary>
+        <div class="projtbl"><div class="tblwrap" style="border:none;border-radius:0;">
+          <table><thead><tr><th>साल</th><th>उम्र (बड़ा)</th><th>मासिक निकासी</th><th>सालाना निकासी</th><th>टैक्स सहित कुल</th><th>साल के अंत की बची रकम</th></tr></thead>
+          <tbody id="projBody"></tbody></table>
+        </div></div>
+      </details>
+    </div>
+
+    <h3 style="font-size:19px;margin:40px 0 12px;">गणना का तर्क</h3>
+    <p style="margin-bottom:16px;">इसे सीधे स्प्रेडशीट या कोड में डाल दें। निकासी हर साल की <em>शुरुआत</em> में होती है; बची रकम साल भर बढ़ती है।</p>
+    <div class="formula">
+<span class="c">// पैरामीटर</span><br>
+C  = दंपती की अपनी रकम &nbsp;&nbsp;<span class="c">// ₹</span><br>
+P  = माता-पिता की मिलाई पूँजी <span class="c">// ₹, परिवार स्थिति</span><br>
+Ceff = C + P &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// चालू रकम</span><br>
+I  = शुरुआती मासिक आमदनी <span class="c">// ₹, शुद्ध</span><br>
+S  = हर 5-साल ब्लॉक पर बढ़ोतरी <span class="c">// जैसे 0.20</span><br>
+R  = औसत सालाना रिटर्न &nbsp;&nbsp;&nbsp;<span class="c">// जैसे 0.085</span><br>
+&sigma;  = रिटर्न उतार-चढ़ाव &nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// जैसे 0.08</span><br>
+N  = अवधि साल में &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;T = टैक्स बढ़ोतरी<br>
+<br>
+<span class="c">// साल y में निकासी (y = 1…N)</span><br>
+<span class="g">W(y)</span> &nbsp;&nbsp;= I × 12 × (1 + S)^floor((y−1)/5) × (1 + T)<br>
+<br>
+<span class="c">// निश्चित पुनरावृत्ति (Bal₀ = Ceff)</span><br>
+<span class="g">Bal(y)</span> = ( Bal(y−1) − W(y) ) × (1 + R)<br>
+<br>
+<span class="c">// Monte-Carlo: बेतरतीब ड्रॉ के साथ 1,000× दोहराएँ</span><br>
+r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;<span class="c">// हर साल नया</span><br>
+<span class="g">Bal(y)</span> = ( Bal(y−1) − W(y) ) × (1 + r&#95;y)<br>
+<span class="g">success</span> = उन रास्तों का हिस्सा जिनमें min<sub>y</sub> Bal(y) ≥ 0<br>
+<br>
+<span class="c">// नतीजे</span><br>
+टिकाऊ ⇔ min<sub>y</sub> Bal(y) ≥ 0 &nbsp;·&nbsp; लक्ष्य success ≥ 90%<br>
+ज़रूरी रकम = सबसे छोटा Ceff जिससे Bal(N) = 0 &nbsp;<span class="c">(bisection)</span>
+    </div>
+
+    <h3 style="font-size:19px;margin:38px 0 12px;">पैरामीटर संदर्भ</h3>
+    <div class="tblwrap"><table class="paramtbl">
+      <thead><tr><th>चिह्न</th><th>मतलब</th><th>आधार मान</th><th>उचित दायरा</th></tr></thead>
+      <tbody>
+        <tr><td>C</td><td style="text-align:left">दंपती की खुद जुटाई रकम</td><td>₹2.10 करोड़</td><td>₹1.5–3 करोड़</td></tr>
+        <tr><td>P</td><td style="text-align:left">माता-पिता की मिलाई पूँजी (परिवार स्थिति)</td><td>₹40 लाख</td><td>₹0–1.5 करोड़</td></tr>
+        <tr><td>σ</td><td style="text-align:left">रिटर्न उतार-चढ़ाव (Monte-Carlo)</td><td>6%</td><td>4–14%</td></tr>
+        <tr><td>I</td><td style="text-align:left">शुरुआती शुद्ध मासिक आमदनी</td><td>₹1,00,000</td><td>₹75 हज़ार–2 लाख</td></tr>
+        <tr><td>S</td><td style="text-align:left">हर 5-साल ब्लॉक पर आमदनी बढ़ोतरी</td><td>20%</td><td>15–34%</td></tr>
+        <tr><td>R</td><td style="text-align:left">मिला-जुला (औसत) पोर्टफोलियो रिटर्न</td><td>9%</td><td>8–10%</td></tr>
+        <tr><td>N</td><td style="text-align:left">रिटायरमेंट अवधि</td><td>32 साल</td><td>30–35 साल</td></tr>
+        <tr><td>T</td><td style="text-align:left">शुद्ध→कुल टैक्स बढ़ोतरी</td><td>8%</td><td>5–15%</td></tr>
+        <tr><td>H</td><td style="text-align:left">सेहत &amp; आकस्मिक रिज़र्व (अलग रखा)</td><td>₹40 लाख</td><td>₹30–50 लाख</td></tr>
+      </tbody>
+    </table></div>
+    <p style="font-size:12.5px;color:var(--faint);margin-top:12px;">Monte-Carlo के बारे में: 1,000 में से हर रास्ता हर साल एक नॉर्मल डिस्ट्रिब्यूशन से नया रिटर्न लेता है — औसत R, मानक विचलन σ — ताकि रिटायरमेंट की शुरुआत में खराब <em>सीक्वेंस</em> भी पकड़ में आए, सिर्फ औसत नहीं। "Success" (सफलता) = रकम पूरी अवधि में कभी शून्य नहीं हुई। लक्ष्य रखें <b>≥ 90%</b>। यह नॉर्मल रिटर्न मान कर चलता है (असली बाज़ारों में मोटी पूँछें और हल्का आपसी-संबंध होता है), इसलिए इसे मज़बूती का पैमाना मानें, गारंटी नहीं — और ध्यान दें कि बकेट ढाँचा ही वह चीज़ है जो आपको कमज़ोर रास्तों को नीचे इक्विटी बेचे बिना पार करने देता है।</p>
+    <div class="callout" style="border-color:var(--b1);background:var(--b1-bg);">
+      <b style="color:var(--b1)">एन्युटी-न्यूनतम स्लाइडर के बारे में — इसे परखने से पहले यह पढ़ें।</b> इसे हिलाएँ तो आप देखेंगे कि success % बमुश्किल बदलता है जबकि <em>मध्यमान आखिरी बची रकम घट जाती है</em>। यह अपेक्षित और ईमानदार है: आप ऐसा पैसा जो ~9% पर बढ़ सकता था, उसे एक ~7% तय देने वाली पेंशन से बदल रहे हैं, और पेंशन आपकी 5-साला बढ़ोतरी के साथ नहीं बढ़ती। इसलिए कागज़ पर यह हल्का बोझ लगता है। <b>इसकी असली कीमत वह सुरक्षा है जिसे यह मॉडल गिन नहीं सकता:</b> वह आमदनी हर महीने आती रहती है <em>आपके जीवन के आखिर तक</em> — 90 की उम्र के पार, खराब बाज़ार के एक दशक में, और पीछे बचे साथी को एक भी निवेश सँभाले बिना। इसे अपनी बुनियादी ज़रूरतों (खाना, बिजली-पानी, दवाइयाँ) के लिए बीमा समझें, पैसा बढ़ाने का ज़रिया नहीं। एक आम पसंद है कि सिर्फ इतनी एन्युटी लें जो न-टाले-जा-सकने वाले मासिक बिल (₹30–50 हज़ार) ढक ले, और बाकी रकम को महँगाई से लड़ने दें।
+    </div>
+  </section>
+
+  <!-- ======================= 7. ACTION PLAN ======================= -->
+  <section id="action">
+    <div class="sec-head"><span class="sec-num">07</span><h2>आपका कदम-दर-कदम एक्शन प्लान</h2></div>
+    <p class="sub">कोई कठिन शब्द नहीं, कोई अंदाज़ा नहीं। इन्हें क्रम से करें। जैसे-जैसे पूरा हो, हर बॉक्स पर टिक करें — आपके टिक सिर्फ इसी डिवाइस पर सेव होते हैं। अगर किसी कदम में विशेषज्ञ चाहिए, तो बताया गया है किसे बुलाएँ।</p>
+
+    <div class="phase">
+      <div class="phase-h"><span class="phase-tag">चरण 0</span><h3>इस महीने — नींव रखें (एक रुपया निवेश करने से पहले)</h3></div>
+      <ul class="checklist">
+        <li><label><input type="checkbox" data-k="p0a"><span><b>एक नया बैंक खाता खोलें और उसका नाम "आमदनी" रखें।</b> हर योजना का भुगतान यहीं आएगा — इसे कभी अपने रोज़-खर्च खाते से न मिलाएँ। <i>कौन: आपका बैंक।</i></span></label></li>
+        <li><label><input type="checkbox" data-k="p0b"><span><b>अभी हेल्थ इंश्योरेंस लें।</b> ₹10–15 लाख का फैमिली फ्लोटर + ₹50 लाख–₹1 करोड़ का "सुपर टॉप-अप"। देर न करें — उम्र के साथ यह सिर्फ महँगा और मुश्किल होता है। <i>कौन: बीमा सलाहकार / ऑनलाइन एग्रीगेटर।</i></span></label></li>
+        <li><label><input type="checkbox" data-k="p0c"><span><b>सुरक्षा जाल अलग रखें (बकेट 4)।</b> ₹25 लाख मेडिकल कोष + ₹12–15 लाख आपात कोष, लिक्विड फंड या स्वीप-FD में। दोनों को अलग रखें, और महीने के बिलों पर इन्हें कभी खर्च न करें। <i>कौन: आपका बैंक / MF प्लेटफॉर्म।</i></span></label></li>
+        <li><label><input type="checkbox" data-k="p0d"><span><b>दोनों अपनी-अपनी वसीयत बनाएँ, और नॉमिनेशन ठीक करें।</b> हर बैंक &amp; डीमैट खाते में "Either or Survivor" जोड़ें; हर खाते, FD, पॉलिसी और फंड पर नॉमिनी का नाम दें। याद रखें: नॉमिनी सिर्फ पैसा भरोसे में रखता है — असल में किसे मिलेगा यह वसीयत तय करती है। <i>कौन: एक वकील।</i></span></label></li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-h"><span class="phase-tag">चरण 1</span><h3>महीने 1–3 — बकेट 1 बनाएँ (आपकी सुरक्षित मासिक आमदनी)</h3></div>
+      <ul class="checklist">
+        <li><label><input type="checkbox" data-k="p1a"><span><b>RBI फ्लोटिंग रेट सेविंग्स बॉन्ड — ₹20 लाख।</b> ~8.05%, सरकारी, हर 6 महीने देता है। <i>कौन: ज़्यादातर बैंक या RBI Retail Direct।</i></span></label></li>
+        <li><label><input type="checkbox" data-k="p1b"><span><b>POMIS — ₹15 लाख (संयुक्त)।</b> 7.4%, हर महीने आपके खाते में देता है। <i>कौन: पोस्ट ऑफिस।</i></span></label></li>
+        <li><label><input type="checkbox" data-k="p1c"><span><b>लिक्विड / आर्बिट्राज फंड — ₹10 लाख।</b> यह वह टंकी है जहाँ से आपकी मासिक "तनख्वाह" (SWP) पंप होती है। <i>कौन: कोई भी MF प्लेटफॉर्म।</i></span></label></li>
+        <li><label><input type="checkbox" data-k="p1d"><span><b>SCSS — ₹30 लाख</b> जब बड़ा साथी 60 का हो (~2 साल), <em>या</em> अभी किसी तैयार 60+ माता-पिता के ज़रिए (§3)। 8.2%, तिमाही देता है। <i>कौन: बैंक या पोस्ट ऑफिस।</i></span></label></li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-h"><span class="phase-tag">चरण 2</span><h3>महीने 1–3 — बकेट 2 &amp; 3 बनाएँ (भरने वाला + बढ़ाने वाला)</h3></div>
+      <ul class="checklist">
+        <li><label><input type="checkbox" data-k="p2a"><span><b>बकेट 2 (₹65 लाख):</b> एक बैंकिंग &amp; PSU डेट फंड, एक टारगेट-मैच्योरिटी फंड/G-Sec (आज की दर बाँध देता है), और एक छोटा REIT। <i>कौन: MF प्लेटफॉर्म / ब्रोकर।</i></span></label></li>
+        <li><label><input type="checkbox" data-k="p2b"><span><b>बकेट 3 (₹100 लाख):</b> एक Nifty 50 इंडेक्स फंड, एक फ्लेक्सी-कैप फंड, और एक गोल्ड ETF। <i>कौन: MF प्लेटफॉर्म।</i></span></label></li>
+        <li><label><input type="checkbox" data-k="p2c"><span><b>इक्विटी धीरे-धीरे डालें।</b> एकमुश्त रकम एक ही दिन न झोंकें — इसे STP (सिस्टेमैटिक ट्रांसफर) से 3–6 महीने में फैलाएँ ताकि आप एक ही ऊँची कीमत पर न खरीदें।</span></label></li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-h"><span class="phase-tag">चरण 3</span><h3>मासिक "तनख्वाह" चालू करें</h3></div>
+      <ul class="checklist">
+        <li><label><input type="checkbox" data-k="p3a"><span><b>एक SWP सेट करें</b> लिक्विड फंड से "आमदनी" खाते में, 1 तारीख की, उतनी रकम के लिए जो ब्याज पहले से नहीं ढकता (~₹35–45 हज़ार)।</span></label></li>
+        <li><label><input type="checkbox" data-k="p3b"><span><b>एक स्टैंडिंग इंस्ट्रक्शन सेट करें:</b> 1 तारीख को "आमदनी" खाते से आपके खर्च खाते में ₹1,00,000। हो गया — आपने खुद को तनख्वाह दे दी।</span></label></li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-h"><span class="phase-tag">60 पर</span><h3>जब आप में से हर एक 60 का हो</h3></div>
+      <ul class="checklist">
+        <li><label><input type="checkbox" data-k="p4a"><span><b>अपने नाम पर SCSS ₹30 लाख खोलें</b> (ऊँची दर के लिए RBI बॉन्ड/FD से पैसा इसमें ले जाएँ)।</span></label></li>
+        <li><label><input type="checkbox" data-k="p4b"><span><b>एक संयुक्त-जीवन एन्युटी पर विचार करें</b> (LIC जीवन अक्षय, खरीद-मूल्य वापसी) जो ज़रूरी बिल ढकने जितनी हो — एक पक्की आमदनी जिससे ज़्यादा आप जी नहीं सकते। 60/65/70 पर हिस्सों में खरीदें। <i>कौन: LIC / बीमा सलाहकार।</i></span></label></li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-h"><span class="phase-tag">हर साल</span><h3>आपकी 30-मिनट की सालाना समीक्षा</h3></div>
+      <ul class="checklist">
+        <li><label><input type="checkbox" data-k="p5a"><span><b>नीचे की ओर भरें।</b> बकेट 2 से बकेट 1 को ~5 साल के खर्च तक भरें; बकेट 3 से बकेट 2 भरें — <em>पर सिर्फ तभी जब इक्विटी का साल अच्छा रहा हो।</em></span></label></li>
+        <li><label><input type="checkbox" data-k="p5b"><span><b>अगर बाज़ार गिरा हो, तो बकेट 3 को कुछ न करें।</b> बकेट 1 &amp; 2 से गुज़ारा करें और इक्विटी को सँभलने दें। यही एक नियम प्लान को टिकाए रखता है।</span></label></li>
+        <li><label><input type="checkbox" data-k="p5c"><span><b>प्रति व्यक्ति ₹1.25 लाख इक्विटी मुनाफा हार्वेस्ट करें</b> टैक्स-मुक्त, और बढ़ते खर्च के लिए मेडिकल कोष भरें। हर नॉमिनेशन दोबारा जाँचें।</span></label></li>
+      </ul>
+    </div>
+
+    <div class="dodont">
+      <div class="dont">
+        <h4>कभी न करें</h4>
+        <ul>
+          <li>बाज़ार गिरने पर महीने के बिल भरने के लिए कभी शेयर (बकेट 3) न बेचें।</li>
+          <li>किसी छोटे/नए बैंक की FD में ₹5 लाख से ज़्यादा कभी न रखें — प्रति बैंक सिर्फ ₹5 लाख का बीमा होता है।</li>
+          <li>रोज़मर्रा के खर्च के लिए सेहत/आपात कोष में कभी हाथ न डालें।</li>
+          <li>किसी "8.5% गारंटीड" ऑफर के पीछे कौन है, यह जाँचे बिना उसके पीछे कभी न भागें।</li>
+        </ul>
+      </div>
+      <div class="do">
+        <h4>हमेशा करें</h4>
+        <ul>
+          <li>दो टैक्स-मुक्त बैंड इस्तेमाल करने के लिए हर योजना को दोनों साथियों में बाँटें।</li>
+          <li>फंड में "ग्रोथ" विकल्प चुनें, "IDCW/डिविडेंड" नहीं।</li>
+          <li>एक आसान लिखित शीट रखें ताकि पीछे बचा साथी यह सब चला सके।</li>
+          <li>साल में एक बार समीक्षा करें — इससे ज़्यादा छेड़छाड़ नहीं।</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= 8. GLOSSARY ======================= -->
+  <section id="glossary">
+    <div class="sec-head"><span class="sec-num">08</span><h2>आसान भाषा में शब्दावली</h2></div>
+    <p class="sub">इस प्लान में इस्तेमाल हर शब्द, ऐसे समझाया गया जैसे आप किसी दोस्त को समझाते।</p>
+    <div class="glossgrid">
+      <div class="gl"><b>रकम (Corpus)</b><p>आपकी बचाई और निवेश की गई कुल जमा राशि। आपका "रिटायरमेंट फंड"।</p></div>
+      <div class="gl"><b>SWP (सिस्टेमैटिक विदड्रॉल प्लान)</b><p>एक ऑटो-निर्देश जो हर महीने म्यूचुअल फंड का थोड़ा हिस्सा बेचकर आपके बैंक में देता है — SIP का उल्टा।</p></div>
+      <div class="gl"><b>SIP / STP</b><p>SIP = हर महीने एक तय रकम निवेश करना। STP = एकमुश्त रकम को धीरे-धीरे इक्विटी में ले जाना ताकि आप सब एक ही कीमत पर न खरीदें।</p></div>
+      <div class="gl"><b>SCSS</b><p>वरिष्ठ नागरिक बचत योजना — 60+ के लिए एक सरकारी योजना, ₹30 लाख सीमा, ~8.2%, हर तिमाही देती है। बहुत सुरक्षित।</p></div>
+      <div class="gl"><b>POMIS</b><p>पोस्ट ऑफिस मंथली इनकम स्कीम — सुरक्षित, हर महीने आपके खाते में ब्याज देती है। संयुक्त खाते के लिए ₹15 लाख सीमा।</p></div>
+      <div class="gl"><b>RBI फ्लोटिंग रेट बॉन्ड</b><p>एक सरकारी बॉन्ड (~8.05%) जिसकी दर हर 6 महीने में बदलती है। जितना सुरक्षित हो सकता है उतना, पर 7 साल के लिए लॉक।</p></div>
+      <div class="gl"><b>इंडेक्स / फ्लेक्सी-कैप फंड</b><p>इंडेक्स = एक फंड जो बस बाज़ार की नकल करता है (जैसे Nifty 50), बहुत कम लागत। फ्लेक्सी-कैप = मैनेजर किसी भी आकार के शेयर चुनता है।</p></div>
+      <div class="gl"><b>एन्युटी</b><p>आप बीमा कंपनी को एकमुश्त रकम देते हैं; वे आपको जीवनभर हर महीने एक तय रकम देते हैं। पक्की, पर आमतौर पर महँगाई के साथ नहीं बढ़ती।</p></div>
+      <div class="gl"><b>फ्लोटर &amp; सुपर टॉप-अप</b><p>फ्लोटर = एक हेल्थ पॉलिसी जो पूरे परिवार को कवर करती है। सुपर टॉप-अप = सस्ता अतिरिक्त कवर जो एक तय रकम से ऊपर लागू होता है।</p></div>
+      <div class="gl"><b>LTCG / STCG</b><p>निवेश के मुनाफे पर टैक्स। लंबी अवधि (&gt;1 साल रखा) इक्विटी मुनाफा: 12.5%, पहले ₹1.25 लाख/साल मुफ्त। छोटी अवधि: 20%।</p></div>
+      <div class="gl"><b>नई बनाम पुरानी टैक्स रिजीम</b><p>टैक्स गिनने के दो तरीके। नई = ~₹12 लाख तक की आमदनी टैक्स-मुक्त पर छूटें कम। पुरानी = ज़्यादा छूटें पर मुफ्त सीमा कम।</p></div>
+      <div class="gl"><b>सीक्वेंस-ऑफ-रिटर्न्स जोखिम</b><p>आपके रिटायरमेंट के <em>शुरुआती</em> सालों में बाज़ार गिरने का खतरा — यह ऐसी रकम को भी डुबो सकता है जिसे "औसत रिटर्न" ठीक बताते हैं। बकेट इससे बचाव करते हैं।</p></div>
+      <div class="gl"><b>Monte-Carlo (मॉन्टे-कार्लो) परीक्षण</b><p>प्लान को 1,000 बार अलग-अलग बेतरतीब बाज़ार नतीजों के साथ चलाना, यह देखने के लिए कि कितनों में यह टिकता है। हम 90%+ का लक्ष्य रखते हैं।</p></div>
+      <div class="gl"><b>DICGC बीमा</b><p>बैंक जमा पर सरकारी बीमा — पर प्रति बैंक सिर्फ ₹5 लाख। बड़ी FD को कई बैंकों में फैलाएँ।</p></div>
+      <div class="gl"><b>नॉमिनी बनाम वारिस</b><p>मृत्यु के बाद नॉमिनी सिर्फ आपका पैसा <em>रखता</em> है; असल में किसका है यह आपकी वसीयत (या कानून) तय करती है। वसीयत बनाएँ।</p></div>
+      <div class="gl"><b>रीबैलेंसिंग</b><p>साल में एक बार, बढ़ी हुई बकेट से घटी हुई बकेट में पैसा ले जाना, ताकि प्लान पटरी पर रहे।</p></div>
+    </div>
+  </section>
+
+  <div class="disc">
+    <b>ज़रूरी — यह एक शैक्षिक प्लानिंग ढाँचा है, व्यक्तिगत निवेश सलाह नहीं।</b> मैं एक AI असिस्टेंट हूँ, SEBI-पंजीकृत निवेश सलाहकार नहीं, और यह विश्लेषण आपकी पूरी वित्तीय स्थिति, मौजूदा संपत्ति, सेहत, देनदारियों या जोखिम सहने की क्षमता को ध्यान में नहीं रखता। यहाँ की दरें और नियम अगस्त 2026 के अनुसार खोजे गए हैं (SCSS 8.2%, POMIS 7.4%, FRSB 8.05%; LTCG 12.5%/₹1.25L, नई-रिजीम ₹12L शून्य बैंड) पर ये बार-बार बदलते हैं — नया इनकम-टैक्स एक्ट 2025 (अप्रैल 2026 से लागू) धाराओं के नंबर भी बदल सकता है — इसलिए कुछ भी करने से पहले हर आँकड़ा मौजूदा अधिसूचनाओं से जाँच लें। इक्विटी रिटर्न की गारंटी नहीं; 9% औसत / 6% उतार-चढ़ाव का मिश्रण एक अनुमान है, वादा नहीं। कृपया किसी योग्य SEBI-पंजीकृत निवेश सलाहकार (RIA) या लाइसेंस-प्राप्त CFP के साथ इस ब्लूप्रिंट को जाँचें और कोई भी पूँजी लगाने से पहले एक Monte-Carlo तनाव परीक्षण चलाएँ।
+  </div>
+
+  <footer>
+    रिटायरमेंट बकेट प्लान · मॉडलिंग आधार: साल की शुरुआत में निकासी, मिले-जुले रिटर्न पर सालाना बढ़ोतरी, हर 5-साल ब्लॉक पर 20% आमदनी बढ़ोतरी जब तक कैलकुलेटर में न बदला जाए। आँकड़े गोल किए गए। एक उदाहरण निकासी ढाँचे के रूप में तैयार · 29 अगस्त 2026।
+  </footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const inr = n => { // format ₹ from a rupee amount, in Cr/L
+    if (Math.abs(n) >= 1e7) return "₹" + (n/1e7).toFixed(2) + " करोड़";
+    if (Math.abs(n) >= 1e5) return "₹" + (n/1e5).toFixed(2) + " लाख";
+    return "₹" + Math.round(n).toLocaleString('en-IN');
+  };
+  const inrFull = n => "₹" + Math.round(n).toLocaleString('en-IN');
+
+  const ANNUITY_RATE = 0.07;   // joint-life, return-of-purchase-price, nominal
+  const ids = ["C","P","A","I","S","R","V","N","T","H"];
+
+  // two-way sync: slider <-> editable number box, both trigger recompute
+  ids.forEach(k => {
+    const rng = $(k), num = $(k+"_n");
+    const clamp = v => Math.min(+rng.max, Math.max(+rng.min, v));
+    rng.addEventListener('input', () => { if(num) num.value = rng.value; recompute(); });
+    if(num){
+      num.addEventListener('input', () => {
+        if(num.value==='' || isNaN(+num.value)){ recompute(); return; }
+        rng.value = clamp(+num.value); recompute();
+      });
+      num.addEventListener('blur', () => { num.value = clamp(+num.value || +rng.min); rng.value = num.value; recompute(); });
+    }
+  });
+  // read a control's numeric value (prefers the number box while typing)
+  const val = k => { const num=$(k+"_n"); const n = num && num.value!=='' ? +num.value : +$(k).value;
+    return isNaN(n) ? +$(k).value : Math.min(+$(k).max, Math.max(+$(k).min, n)); };
+
+  // withdrawal in year y (net → gross)
+  function wd(y,I,S,T){ return I*12*Math.pow(1+S, Math.floor((y-1)/5))*(1+T); }
+
+  // standard normal via Box–Muller
+  function randn(){ let u=0,v=0; while(u===0)u=Math.random(); while(v===0)v=Math.random();
+    return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+
+  // draw = drawdown corpus (after annuity carve-out); annAnnual = guaranteed yearly annuity income
+  function monteCarlo(draw,annAnnual,I,S,T,N,R,vol,paths){
+    const ends=new Array(paths); let success=0, depleted=0;
+    for(let p=0;p<paths;p++){
+      let bal=draw, ok=true;
+      for(let y=1;y<=N;y++){
+        bal -= Math.max(0, wd(y,I,S,T) - annAnnual);   // annuity covers part of the need
+        if(bal<0){ ok=false; bal=0; break; }
+        const r = R + vol*randn();
+        bal *= (1+Math.max(r,-0.6));
+      }
+      if(ok) success++; else depleted++;
+      ends[p]=bal;
+    }
+    ends.sort((a,b)=>a-b);
+    const q=t=>ends[Math.min(paths-1,Math.floor(t*paths))];
+    return {prob:success/paths, dep:depleted/paths, p10:q(0.10), p50:q(0.50), p90:q(0.90), ends};
+  }
+
+  function renderMC(mc,Ceff){
+    const badge=$("mcBadge"), probEl=$("mcProb");
+    const pct=Math.round(mc.prob*100);
+    probEl.textContent = pct + "%";
+    $("mcP10").textContent = inr(Math.max(mc.p10,0));
+    $("mcP50").textContent = inr(Math.max(mc.p50,0));
+    $("mcP90").textContent = inr(Math.max(mc.p90,0));
+    let cls = pct>=90?"ok":(pct>=75?"warn":"fail");
+    let lab = pct>=90?"मज़बूत":(pct>=75?"कमज़ोर":"जोखिमभरा");
+    badge.className="mc-badge "+cls; badge.textContent=lab+" · "+pct+"% सुरक्षित";
+    probEl.style.color = cls==="ok"?"var(--good)":(cls==="warn"?"var(--warn)":"var(--crit)");
+
+    // histogram of ending balances
+    const bins=20;
+    const maxV = Math.max(Ceff*2.5, mc.ends[Math.floor(mc.ends.length*0.95)]||Ceff);
+    const counts=new Array(bins).fill(0);
+    mc.ends.forEach(v=>{ let i = v<=0 ? 0 : Math.min(bins-1, Math.floor(v/maxV*bins)); counts[i]++; });
+    const mx=Math.max(...counts,1);
+    // low-balance threshold (< 0.5× start) flagged amber
+    const lowBin = Math.max(1, Math.floor(0.5*Ceff/maxV*bins));
+    $("mcHist").innerHTML = counts.map((c,i)=>{
+      const cls = i===0 ? "bar dep" : (i<lowBin ? "bar low" : "bar");
+      return `<div class="${cls}" style="height:${Math.max(2, c/mx*100)}%" title="${c} paths"></div>`;
+    }).join('');
+    $("mcAxMid").textContent = inr(maxV/2);
+    $("mcAxMax").textContent = "≥ "+inr(maxV);
+  }
+
+  function recompute(){
+    const Cc = val("C") * 1e5;               // couple's own, lakh → ₹
+    const P  = val("P") * 1e5;               // parents' pooled capital
+    const Ceff = Cc + P;                      // income corpus
+    const I = val("I");
+    const S = val("S")/100;
+    const R = val("R")/100;
+    const vol = val("V")/100;
+    const N = Math.round(val("N"));
+    const T = val("T")/100;
+    const H = val("H") * 1e5;                 // ring-fenced reserve
+    let A = val("A") * 1e5;                    // annuity carve-out
+    if (A > Ceff) A = Ceff;                    // can't annuitise more than you have
+    const draw = Ceff - A;                     // drawdown corpus
+    const annAnnual = A * ANNUITY_RATE;        // guaranteed yearly annuity income
+    const annMonthly = annAnnual/12;
+
+    $("clTotal").textContent = inr(Ceff);
+    $("clYou").textContent = inr(Cc);
+    $("clPar").textContent = inr(P);
+    $("clRes").textContent = inr(H);
+    $("clCap").textContent = inr(Ceff + H);
+    // annuity readout
+    const aline = $("annuityline");
+    if (A > 0){
+      aline.hidden = false;
+      $("anMo").textContent = inrFull(annMonthly);
+      $("anPct").textContent = Math.round(annAnnual/(I*12)*100) + "%";
+    } else { aline.hidden = true; }
+
+    let bal = draw, minBal = draw, paid = 0;
+    const rows = [];
+    for (let y=1; y<=N; y++){
+      const block = Math.floor((y-1)/5);
+      const netW = I * 12 * Math.pow(1+S, block);
+      const grossW = netW * (1+T);
+      const corpusW = Math.max(0, grossW - annAnnual);   // annuity covers part
+      bal = bal - corpusW;
+      const dip = bal;
+      if (dip < minBal) minBal = dip;
+      bal = bal * (1+R);
+      paid += grossW + 0;                                // total delivered to retiree
+      rows.push({y, age:58+y, monthly:netW/12, netW, grossW, bal: bal});
+      if (bal < 0){
+        for(let z=y+1; z<=N; z++){ rows.push({y:z, age:58+z, monthly:I*Math.pow(1+S,Math.floor((z-1)/5)), netW:null, grossW:null, bal:bal}); }
+        break;
+      }
+    }
+
+    $("oEnd").textContent = inr(Math.max(bal,0));
+    $("oMin").textContent = inr(Math.max(minBal,0));
+    $("oPaid").textContent = inr(paid);
+
+    // verdict
+    const status = $("status");
+    let prob, cls, msg;
+    const endRatio = bal / Math.max(draw,1);
+    if (minBal < 0){
+      prob = "विफल"; cls="fail";
+      msg = "✕ पूंजी अवधि पूरी होने से पहले ही खत्म हो जाती है। पूंजी बढ़ाएं, हर 5 साल की बढ़ोतरी घटाएं, या मासिक निकासी कम करें।";
+    } else if (endRatio < 0.15){
+      prob = "तंग"; cls="tight";
+      msg = "△ टिक तो जाती है, पर अंत में बहुत कम बचता है — खराब बाज़ार या लंबी उम्र के लिए कोई गुंजाइश नहीं। सुरक्षा बफ़र बढ़ाएं।";
+    } else if (endRatio < 0.9){
+      prob = "ठीक"; cls="ok";
+      msg = "✓ पूरी अवधि तक टिकाऊ — अनुक्रम-जोखिम के विरुद्ध एक कार्यशील बफ़र के साथ।";
+    } else {
+      prob = "विरासत"; cls="ok";
+      msg = "✓ स्वयं-टिकाऊ — पूंजी जितनी शुरू हुई उतनी या उससे ज़्यादा पर खत्म होती है। आराम से विरासत छोड़ती है।";
+    }
+    $("oProb").textContent = prob;
+    status.className = "statusbar " + cls;
+    status.textContent = msg;
+
+    // table
+    const tb = $("projBody");
+    tb.innerHTML = rows.map(r => {
+      const dead = r.netW === null;
+      return `<tr${(r.y-1)%5===0?' style="border-top:2px solid var(--line-strong)"':''}>
+        <td>${r.y}</td><td>${r.age}</td>
+        <td>${dead?'—':inrFull(r.monthly)}</td>
+        <td>${dead?'—':inr(r.netW)}</td>
+        <td>${dead?'—':inr(r.grossW)}</td>
+        <td style="color:${r.bal<0?'var(--crit)':'inherit'};font-weight:${(r.y)%5===0?'600':'400'}">${inr(r.bal)}</td>
+      </tr>`;
+    }).join('');
+
+    // Monte-Carlo stress test (1,000 paths)
+    renderMC(monteCarlo(draw, annAnnual, I, S, T, N, R, vol, 1000), Math.max(draw,1));
+  }
+  recompute();
+
+  // ---- Action-plan checklist: remember ticks on this device only ----
+  const CK = "brb_checklist_v1";
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(CK) || "{}") || {}; } catch(e) { saved = {}; }
+  document.querySelectorAll('.checklist input[type=checkbox]').forEach(box => {
+    const k = box.getAttribute('data-k');
+    if (saved[k]) box.checked = true;
+    box.addEventListener('change', () => {
+      saved[k] = box.checked;
+      try { localStorage.setItem(CK, JSON.stringify(saved)); } catch(e) {}
+    });
+  });
+})();
+</script>
