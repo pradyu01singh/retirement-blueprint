@@ -163,6 +163,28 @@
   .calctip{font-size:13px;background:var(--emerald-soft);color:var(--ink);border-radius:10px;
     padding:11px 16px;margin:0 0 20px;border:1px solid var(--line);}
   .calctip b{color:var(--emerald);}
+  .mixbox{padding:16px 26px 18px;border-bottom:1px solid var(--line);background:var(--paper);}
+  .mix-h{font-size:13.5px;margin-bottom:12px;}
+  .mix-presets{margin-left:6px;color:var(--faint);}
+  .mixbtn{font:inherit;font-size:12px;font-weight:600;color:var(--emerald);background:var(--card);
+    border:1px solid var(--line-strong);border-radius:20px;padding:3px 12px;margin-left:6px;cursor:pointer;}
+  .mixbtn:hover{background:var(--emerald-soft);border-color:var(--emerald);}
+  .mixrow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:12px;}
+  @media(max-width:640px){.mixrow{grid-template-columns:1fr;}}
+  .mixcell{display:flex;align-items:center;gap:8px;font-size:13.5px;background:var(--card);
+    border:1px solid var(--line);border-radius:10px;padding:9px 12px;}
+  .mixdot{width:10px;height:10px;border-radius:3px;flex:none;}
+  .mixcell label{flex:1;font-weight:600;}
+  .mixcell .mixr{color:var(--faint);font-size:11.5px;white-space:nowrap;}
+  .mixfoot{font-size:13.5px;font-variant-numeric:tabular-nums;}
+  .mixfoot b{color:var(--emerald);}
+  #mixSum{font-weight:600;}
+  #mixSum.bad{color:var(--crit);}
+  .mixnote{color:var(--faint);font-size:12px;margin-left:6px;}
+  .acchart .acbar{flex:1;display:flex;flex-direction:column-reverse;min-height:2px;border-radius:3px 3px 0 0;overflow:hidden;}
+  .acchart .acbar .inv{background:var(--b2);}
+  .acchart .acbar .gain{background:var(--b3);}
+  #acLegend .l1{color:var(--b2);} #acLegend .l2{color:var(--b3);}
   .annuityline{padding:12px 26px;font-size:13.5px;background:var(--b1-bg);border-bottom:1px solid var(--line);color:var(--ink);}
   .annuityline b{color:var(--b1);}
   .annuityline span{color:var(--muted);}
@@ -298,7 +320,7 @@
       <div><span class="pb b3">3</span><b>बढ़ाने वाला</b><p>शेयर/इक्विटी। 10+ साल तक बिना छेड़े छोड़ दें ताकि यह इतना बढ़े कि आपकी आगे की बढ़ोतरी का खर्च उठा सके।</p></div>
       <div><span class="pb b4">4</span><b>सुरक्षा जाल</b><p>मेडिकल बिल &amp; आपात-स्थिति के लिए अलग रखी रकम। महीने के खर्च के लिए इसे आप <em>कभी</em> नहीं छूते।</p></div>
     </div>
-    <p style="margin-bottom:0;">हर साल आप ऊपर की बकेट से नीचे की बकेट भरते हैं — और आप <b>बाज़ार गिरने पर कभी शेयर नहीं बेचते</b>, क्योंकि बकेट 1 &amp; 2 में पहले से ही ~10 साल का खर्च मौजूद है। आमदनी के लिए आपको करीब <b>₹2.5 करोड़</b> + सुरक्षा जाल के लिए <b>₹40 लाख</b> ≈ कुल <b>₹2.9 करोड़</b> चाहिए — पूरा आपका अपना पैसा। (इसका कुछ हिस्सा आप 60+ माता-पिता के नाम पर रख सकते हैं ताकि बेहतर सुरक्षित-स्कीम दरें जल्दी मिलें, पर इससे रकम घटती नहीं — देखें §3, और पेच का ध्यान रखें।) नीचे सब कुछ विस्तार से है — और §7 एक टिक-बॉक्स कामों की सूची है।</p>
+    <p style="margin-bottom:0;">हर साल आप ऊपर की बकेट से नीचे की बकेट भरते हैं — और आप <b>बाज़ार गिरने पर कभी शेयर नहीं बेचते</b>, क्योंकि बकेट 1 &amp; 2 में पहले से ही ~10 साल का खर्च मौजूद है। आमदनी के लिए आपको करीब <b>₹2.5 करोड़</b> + सुरक्षा जाल के लिए <b>₹40 लाख</b> ≈ कुल <b>₹2.9 करोड़</b> चाहिए — पूरा आपका अपना पैसा। (इसका कुछ हिस्सा आप 60+ माता-पिता के नाम पर रख सकते हैं ताकि बेहतर सुरक्षित-स्कीम दरें जल्दी मिलें, पर इससे रकम घटती नहीं — देखें §3, और पेच का ध्यान रखें।) नीचे सब कुछ विस्तार से है — §7 पूँजी <em>बनाने</em> में मदद करता है, और §8 एक टिक-बॉक्स कामों की सूची है।</p>
   </div>
 
   <!-- ======================= 1. CORPUS SIZING ======================= -->
@@ -536,7 +558,7 @@
   <section id="calc">
     <div class="sec-head"><span class="sec-num">06</span><h2>लाइव टिकाऊपन कैलकुलेटर + Monte-Carlo (मॉन्टे-कार्लो)</h2></div>
     <div class="simple"><span class="ic">🟢</span><p><b>आसान शब्दों में:</b> आँकड़े तब तक उलझन भरे लगते हैं जब तक आप खुद उनसे न खेलें। नीचे अपने आँकड़े भरें — आपके पास कितना पैसा है, हर महीने कितना चाहिए — और पेज तुरंत दिखाएगा कि प्लान टिकता है या खत्म हो जाता है। "<span class="gloss" title="मॉन्टे-कार्लो = प्लान को 1,000 बार अलग-अलग संभावित बाज़ार नतीजों के साथ चलाकर देखना कि कितनी बार वह टिकता है।">मॉन्टे-कार्लो</span>" का मतलब बस इतना है कि हम इसे 1,000 अलग-अलग संभावित भविष्यों पर आज़माते हैं। आप जो भी टाइप करते हैं वह न सहेजा जाता है, न कहीं भेजा जाता है — बेझिझक आज़माएँ।</p></div>
-    <p class="sub">मॉडल, इंटरैक्टिव बना दिया गया। स्लाइडर हिलाएँ — साल-दर-साल अनुमान, निश्चित नतीजा, और 1,000-रास्तों वाला Monte-Carlo (मॉन्टे-कार्लो) तनाव परीक्षण तुरंत दोबारा गणना करते हैं। यह सिम सिर्फ <em>आमदनी इंजन</em> को कवर करती है; अलग रखा गया सेहत &amp; आकस्मिक रिज़र्व कुल पूँजी में जुड़ता है पर कभी नहीं निकाला जाता। ऊपर का हर आँकड़ा इसी इंजन से निकाला गया है।</p>
+    <p class="sub">मॉडल, इंटरैक्टिव बना दिया गया। स्लाइडर हिलाएँ — साल-दर-साल अनुमान, निश्चित नतीजा, और 1,000-रास्तों वाला Monte-Carlo (मॉन्टे-कार्लो) तनाव परीक्षण तुरंत दोबारा गणना करते हैं। <b>नया:</b> अपना <b>बकेट मिश्रण</b> तय करें और मिला-जुला रिटर्न, जोखिम व सफलता-दर बदलते देखें — सुरक्षित / संतुलित / आक्रामक प्रीसेट आज़माकर स्थितियाँ मिलाएँ। (ध्यान दें कि आक्रामक अक्सर सफलता-दर <em>घटाता</em> है: ज़्यादा ग्रोथ यानी ज़्यादा उतार-चढ़ाव, और शुरुआती खराब दौर ज़्यादा चोट करता है।) यह सिम सिर्फ <em>आमदनी इंजन</em> को कवर करती है; रिज़र्व कभी नहीं निकाला जाता।</p>
 
     <div class="calc">
       <p class="calctip">✎ <b>टाइप करें या खींचें।</b> नीचे का हर बॉक्स बदला जा सकता है — किसी नंबर पर क्लिक करके टाइप करें, या स्लाइडर खींचें। सब कुछ तुरंत दोबारा गणना होता है। यहाँ आप जो करते हैं वह कहीं सेव या भेजा नहीं जाता।</p>
@@ -551,16 +573,22 @@
           <input type="range" id="I" min="50000" max="250000" step="5000" value="100000"><div class="hint">पहले साल में, हाथ में आने वाली</div></div>
         <div class="ctrl"><label>हर 5 साल पर बढ़ोतरी <span class="valwrap"><input type="number" class="numin" id="S_n" min="0" max="40" step="1" value="20"><span class="u">%</span></span></label>
           <input type="range" id="S" min="0" max="40" step="1" value="20"><div class="hint">20% ≈ 3.7%/साल · 34% ≈ 6%/साल महँगाई</div></div>
-        <div class="ctrl"><label>अपेक्षित रिटर्न / साल <span class="valwrap"><input type="number" class="numin" id="R_n" min="6" max="12" step="0.5" value="9"><span class="u">%</span></span></label>
-          <input type="range" id="R" min="6" max="12" step="0.5" value="9"><div class="hint">सभी बकेट का औसत</div></div>
-        <div class="ctrl"><label>बाज़ार के उतार-चढ़ाव <span class="valwrap"><input type="number" class="numin" id="V_n" min="2" max="20" step="1" value="6"><span class="u">%</span></span></label>
-          <input type="range" id="V" min="2" max="20" step="1" value="6"><div class="hint">रिटर्न कितने ऊबड़-खाबड़ हैं · इस मिश्रण के लिए ~6%</div></div>
         <div class="ctrl"><label>कितने साल <span class="valwrap"><input type="number" class="numin" id="N_n" min="20" max="40" step="1" value="32"><span class="u">yrs</span></span></label>
           <input type="range" id="N" min="20" max="40" step="1" value="32"><div class="hint">32 साल → उम्र 86 / 90 तक</div></div>
         <div class="ctrl"><label>टैक्स के लिए अतिरिक्त <span class="valwrap"><input type="number" class="numin" id="T_n" min="0" max="25" step="1" value="8"><span class="u">%</span></span></label>
           <input type="range" id="T" min="0" max="25" step="1" value="8"><div class="hint">टैक्स के लिए थोड़ा ज़्यादा निकालें</div></div>
         <div class="ctrl"><label>सेहत &amp; आपात रिज़र्व <span class="valwrap">₹<input type="number" class="numin" id="H_n" min="0" max="100" step="5" value="40"><span class="u">L</span></span></label>
           <input type="range" id="H" min="0" max="100" step="5" value="40"><div class="hint">बकेट 4 · अलग रखा, आमदनी पर कभी खर्च नहीं</div></div>
+      </div>
+
+      <div class="mixbox">
+        <div class="mix-h"><b>बकेट मिश्रण — आपकी स्थिति।</b> बँटवारा तय करें; कैलकुलेटर मिला-जुला रिटर्न और जोखिम निकाल देगा। <span class="mix-presets">आज़माएँ: <button type="button" class="mixbtn" data-mix="50,30,20">सुरक्षित</button><button type="button" class="mixbtn" data-mix="32,28,40">संतुलित</button><button type="button" class="mixbtn" data-mix="18,22,60">आक्रामक</button></span></div>
+        <div class="mixrow">
+          <div class="mixcell"><span class="mixdot" style="background:var(--b1)"></span><label>सुरक्षित · बकेट 1</label><span class="valwrap"><input type="number" class="numin" id="bSafe" min="0" max="100" step="1" value="32"><span class="u">%</span></span><span class="mixr">~7.5% कमाता</span></div>
+          <div class="mixcell"><span class="mixdot" style="background:var(--b2)"></span><label>मध्यम · बकेट 2</label><span class="valwrap"><input type="number" class="numin" id="bMed" min="0" max="100" step="1" value="28"><span class="u">%</span></span><span class="mixr">~8.5% कमाता</span></div>
+          <div class="mixcell"><span class="mixdot" style="background:var(--b3)"></span><label>ग्रोथ · बकेट 3</label><span class="valwrap"><input type="number" class="numin" id="bGrowth" min="0" max="100" step="1" value="40"><span class="u">%</span></span><span class="mixr">~11.5% कमाता</span></div>
+        </div>
+        <div class="mixfoot"><span id="mixSum">कुल 100%</span> &nbsp;→&nbsp; मिला-जुला रिटर्न <b id="mixR">—</b> · बाज़ार जोखिम (σ) <b id="mixV">—</b> &nbsp;<span class="mixnote">ज़्यादा ग्रोथ = ज़्यादा रिटर्न पर ज़्यादा उतार-चढ़ाव</span></div>
       </div>
 
       <div class="corpline" id="corpline">आमदनी रकम <b id="clTotal">—</b> &nbsp;·&nbsp; जिसमें से <span id="clPar">—</span> माता-पिता के नाम पर &nbsp;·&nbsp; + रिज़र्व <span id="clRes">—</span> &nbsp;⟶&nbsp; जुटाने वाली कुल <b id="clCap">—</b></div>
@@ -652,9 +680,52 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
     </div>
   </section>
 
-  <!-- ======================= 7. ACTION PLAN ======================= -->
+  <!-- ======================= 7. ACCUMULATION ======================= -->
+  <section id="accum">
+    <div class="sec-head"><span class="sec-num">07</span><h2>संचय कैलकुलेटर — पूँजी बनाना</h2></div>
+    <div class="simple"><span class="ic">🟢</span><p><b>आसान शब्दों में:</b> ऊपर वाला कैलकुलेटर पैसे को <em>खर्च</em> करता है। यह उल्टा काम करता है — दिखाता है कि हर महीने का निवेश (<span class="gloss" title="SIP = हर महीने एक तय रकम, आमतौर पर म्यूचुअल फंड में निवेश करना।">SIP</span>) और/या एकमुश्त रकम रिटायरमेंट से <b>पहले</b> कैसे उस ₹2.5–2.9 करोड़ में बढ़ती है। आँकड़े बदलकर देखें कि आपकी रकम कितनी बड़ी होती है — और आप लक्ष्य की राह पर हैं या नहीं।</p></div>
+    <p class="sub">अगर रिटायरमेंट में अभी कुछ साल बाकी हैं, तो यह आपका पूँजी-बनाने का औज़ार है। यह एकमुश्त रकम और मासिक SIP (जिसे हर साल बढ़ा सकते हैं) को एक अपेक्षित रिटर्न पर बढ़ाता है, और साल-दर-साल ग्रोथ दिखाता है।</p>
+
+    <div class="calc">
+      <p class="calctip">✎ <b>टाइप करें या खींचें।</b> हर बॉक्स एडिट हो सकता है। हर बार का <b>निवेश</b> हिस्सा वह है जो आपने डाला; ऊपर का हल्का हिस्सा ग्रोथ है।</p>
+      <div class="controls">
+        <div class="ctrl"><label>आज एकमुश्त रकम <span class="valwrap">₹<input type="number" class="numin" id="acLump_n" min="0" max="500" step="5" value="20"><span class="u">L</span></span></label>
+          <input type="range" id="acLump" min="0" max="500" step="5" value="20"><div class="hint">अभी एक बार लगाई जाने वाली रकम</div></div>
+        <div class="ctrl"><label>मासिक SIP <span class="valwrap">₹<input type="number" class="numin wide" id="acSip_n" min="0" max="500000" step="5000" value="75000"></span></label>
+          <input type="range" id="acSip" min="0" max="500000" step="5000" value="75000"><div class="hint">हर महीने निवेश</div></div>
+        <div class="ctrl"><label>हर साल SIP बढ़ाएँ <span class="valwrap"><input type="number" class="numin" id="acStep_n" min="0" max="20" step="1" value="10"><span class="u">%</span></span></label>
+          <input type="range" id="acStep" min="0" max="20" step="1" value="10"><div class="hint">आमदनी बढ़ने पर SIP बढ़ाएँ</div></div>
+        <div class="ctrl"><label>अपेक्षित रिटर्न / साल <span class="valwrap"><input type="number" class="numin" id="acR_n" min="6" max="15" step="0.5" value="11"><span class="u">%</span></span></label>
+          <input type="range" id="acR" min="6" max="15" step="0.5" value="11"><div class="hint">ज़्यादातर इक्विटी के लिए ~11–12%</div></div>
+        <div class="ctrl"><label>रिटायरमेंट में कितने साल <span class="valwrap"><input type="number" class="numin" id="acN_n" min="1" max="35" step="1" value="10"><span class="u">yrs</span></span></label>
+          <input type="range" id="acN" min="1" max="35" step="1" value="10"><div class="hint">पैसा कितने साल बढ़ता है</div></div>
+        <div class="ctrl"><label>पूँजी लक्ष्य <span class="valwrap">₹<input type="number" class="numin" id="acGoal_n" min="100" max="1000" step="10" value="290"><span class="u">L</span></span></label>
+          <input type="range" id="acGoal" min="100" max="1000" step="10" value="290"><div class="hint">आपका लक्ष्य (§1 से ₹2.9 करोड़)</div></div>
+      </div>
+
+      <div class="verdict">
+        <div class="v"><span class="l">रिटायरमेंट पर पूँजी</span><span class="n" id="acCorpus">—</span></div>
+        <div class="v"><span class="l">कुल आपका निवेश</span><span class="n" id="acInvested">—</span></div>
+        <div class="v"><span class="l">ग्रोथ (मुनाफ़ा)</span><span class="n" id="acGains">—</span></div>
+        <div class="v"><span class="l">लक्ष्य का</span><span class="n" id="acPct">—</span></div>
+      </div>
+      <div class="statusbar" id="acStatus">—</div>
+
+      <div class="mcpanel">
+        <div class="mc-head"><span>ग्रोथ, साल-दर-साल</span><span class="mc-sub" id="acLegend"><span class="l1">■</span> निवेश &nbsp; <span class="l2">■</span> ग्रोथ</span></div>
+        <div class="mc-histwrap">
+          <div class="mc-hist acchart" id="acChart"></div>
+          <div class="mc-axis"><span>अभी</span><span id="acAxMid">—</span><span id="acAxEnd">—</span></div>
+          <div class="mc-caption">हर बार एक साल है। नीचे का गहरा हिस्सा आपका डाला पैसा है; ऊपर का हल्का हिस्सा बढ़ती ग्रोथ है।</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--faint);margin-top:12px;">फ़ॉर्मूला: हर महीने बैलेंस एक महीने का रिटर्न कमाता है और SIP जुड़ती है; SIP साल में एक बार बढ़ती है। रिटर्न की गारंटी नहीं — इक्विटी साल-दर-साल उतार-चढ़ाव वाली है; यह <em>औसत</em> राह दिखाता है।</p>
+  </section>
+
+  <!-- ======================= 8. ACTION PLAN ======================= -->
   <section id="action">
-    <div class="sec-head"><span class="sec-num">07</span><h2>आपका कदम-दर-कदम एक्शन प्लान</h2></div>
+    <div class="sec-head"><span class="sec-num">08</span><h2>आपका कदम-दर-कदम एक्शन प्लान</h2></div>
     <p class="sub">कोई कठिन शब्द नहीं, कोई अंदाज़ा नहीं। इन्हें क्रम से करें। जैसे-जैसे पूरा हो, हर बॉक्स पर टिक करें — आपके टिक सिर्फ इसी डिवाइस पर सेव होते हैं। अगर किसी कदम में विशेषज्ञ चाहिए, तो बताया गया है किसे बुलाएँ।</p>
 
     <div class="phase">
@@ -735,7 +806,7 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
 
   <!-- ======================= 8. GLOSSARY ======================= -->
   <section id="glossary">
-    <div class="sec-head"><span class="sec-num">08</span><h2>आसान भाषा में शब्दावली</h2></div>
+    <div class="sec-head"><span class="sec-num">09</span><h2>आसान भाषा में शब्दावली</h2></div>
     <p class="sub">इस प्लान में इस्तेमाल हर शब्द, ऐसे समझाया गया जैसे आप किसी दोस्त को समझाते।</p>
     <div class="glossgrid">
       <div class="gl"><b>रकम (Corpus)</b><p>आपकी बचाई और निवेश की गई कुल जमा राशि। आपका "रिटायरमेंट फंड"।</p></div>
@@ -777,7 +848,7 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
   const inrFull = n => "₹" + Math.round(n).toLocaleString('en-IN');
 
   const ANNUITY_RATE = 0.07;   // joint-life, return-of-purchase-price, nominal
-  const ids = ["C","P","A","I","S","R","V","N","T","H"];
+  const ids = ["C","P","A","I","S","N","T","H"];
 
   // two-way sync: slider <-> editable number box, both trigger recompute
   ids.forEach(k => {
@@ -795,6 +866,22 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
   // read a control's numeric value (prefers the number box while typing)
   const val = k => { const num=$(k+"_n"); const n = num && num.value!=='' ? +num.value : +$(k).value;
     return isNaN(n) ? +$(k).value : Math.min(+$(k).max, Math.max(+$(k).min, n)); };
+
+  // --- Bucket-mix → blended return (R) and volatility (σ) ---
+  const BUCKET = { rS:0.075, rM:0.085, rG:0.115, vS:0.01, vM:0.05, vG:0.17 };
+  ["bSafe","bMed","bGrowth"].forEach(k => { const el=$(k); if(el) el.addEventListener('input', recompute); });
+  document.querySelectorAll('.mixbtn').forEach(btn => btn.addEventListener('click', () => {
+    const m = btn.getAttribute('data-mix').split(',');
+    $("bSafe").value=m[0]; $("bMed").value=m[1]; $("bGrowth").value=m[2]; recompute();
+  }));
+  function mixRV(){
+    const wS=Math.max(0,+$("bSafe").value||0), wM=Math.max(0,+$("bMed").value||0), wG=Math.max(0,+$("bGrowth").value||0);
+    const sum=wS+wM+wG, d=sum>0?sum:1;
+    const nS=wS/d, nM=wM/d, nG=wG/d;
+    const R = nS*BUCKET.rS + nM*BUCKET.rM + nG*BUCKET.rG;
+    const vol = Math.sqrt(Math.pow(nS*BUCKET.vS,2) + Math.pow(nM*BUCKET.vM,2) + Math.pow(nG*BUCKET.vG,2));
+    return { R, vol, sum };
+  }
 
   // withdrawal in year y (net → gross)
   function wd(y,I,S,T){ return I*12*Math.pow(1+S, Math.floor((y-1)/5))*(1+T); }
@@ -856,8 +943,13 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
     const P  = Math.min(val("P") * 1e5, Cc); // portion of it held in parents' names (subset, not extra)
     const I = val("I");
     const S = val("S")/100;
-    const R = val("R")/100;
-    const vol = val("V")/100;
+    const mix = mixRV();
+    const R = mix.R, vol = mix.vol;
+    const ms = $("mixSum");
+    ms.textContent = "कुल " + Math.round(mix.sum) + "%";
+    ms.className = Math.round(mix.sum) === 100 ? "" : "bad";
+    $("mixR").textContent = (R*100).toFixed(1) + "%";
+    $("mixV").textContent = (vol*100).toFixed(1) + "%";
     const N = Math.round(val("N"));
     const T = val("T")/100;
     const H = val("H") * 1e5;                 // ring-fenced reserve
@@ -953,5 +1045,67 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
       try { localStorage.setItem(CK, JSON.stringify(saved)); } catch(e) {}
     });
   });
+})();
+
+// ---- Accumulation calculator (SIP / lump-sum) — self-contained ----
+(function(){
+  const $ = id => document.getElementById(id);
+  if(!$("acChart")) return;
+  const inr = n => Math.abs(n)>=1e7 ? "₹"+(n/1e7).toFixed(2)+" करोड़"
+                  : Math.abs(n)>=1e5 ? "₹"+(n/1e5).toFixed(2)+" लाख"
+                  : "₹"+Math.round(n).toLocaleString('en-IN');
+  const ids = ["acLump","acSip","acStep","acR","acN","acGoal"];
+  ids.forEach(k => {
+    const rng=$(k), num=$(k+"_n");
+    const clamp=v=>Math.min(+rng.max,Math.max(+rng.min,v));
+    rng.addEventListener('input',()=>{ if(num) num.value=rng.value; calc(); });
+    if(num){ num.addEventListener('input',()=>{ if(num.value===''||isNaN(+num.value)){calc();return;} rng.value=clamp(+num.value); calc(); });
+      num.addEventListener('blur',()=>{ num.value=clamp(+num.value||+rng.min); rng.value=num.value; calc(); }); }
+  });
+  const val = k => { const num=$(k+"_n"); const n=num&&num.value!==''?+num.value:+$(k).value;
+    return isNaN(n)?+$(k).value:Math.min(+$(k).max,Math.max(+$(k).min,n)); };
+
+  function calc(){
+    const lump = val("acLump")*1e5;
+    let sip = val("acSip");
+    const step = val("acStep")/100;
+    const r = val("acR")/100;
+    const N = Math.round(val("acN"));
+    const goal = val("acGoal")*1e5;
+    const rm = Math.pow(1+r, 1/12) - 1;
+
+    let bal = lump, invested = lump;
+    const rows = [];
+    for(let y=1; y<=N; y++){
+      for(let m=0; m<12; m++){ bal = bal*(1+rm) + sip; invested += sip; }
+      rows.push({ year:y, invested:invested, value:bal });
+      sip = sip*(1+step);
+    }
+    const gains = bal - invested;
+    $("acCorpus").textContent = inr(bal);
+    $("acInvested").textContent = inr(invested);
+    $("acGains").textContent = inr(gains);
+    const pct = goal>0 ? Math.floor(bal/goal*100) : 0;
+    $("acPct").textContent = pct + "%";
+
+    const st = $("acStatus");
+    if(bal >= goal){ st.className="statusbar ok";
+      st.textContent = "✓ राह पर — आप "+inr(bal)+" तक पहुँचते हैं, ₹"+(goal/1e7).toFixed(2)+" करोड़ लक्ष्य का करीब "+pct+"%। अतिरिक्त: "+inr(bal-goal)+"।"; }
+    else if(pct >= 80){ st.className="statusbar tight";
+      st.textContent = "△ करीब — "+inr(bal)+" लक्ष्य का "+pct+"% है। SIP, हर-साल की बढ़ोतरी, या एक-दो साल बढ़ाएँ।"; }
+    else { st.className="statusbar fail";
+      st.textContent = "✕ लक्ष्य से कम — "+inr(bal)+" बनाम ₹"+(goal/1e7).toFixed(2)+" करोड़। मासिक SIP बढ़ाएँ या ज़्यादा साल दें।"; }
+
+    const maxV = Math.max(...rows.map(r=>r.value), 1);
+    $("acChart").innerHTML = rows.map(r=>{
+      const h = r.value/maxV*100;
+      const invPct = r.value>0 ? r.invested/r.value*100 : 0;
+      return `<div class="acbar" style="height:${Math.max(2,h)}%" title="साल ${r.year}: ${inr(r.value)} (निवेश ${inr(r.invested)})">`
+           + `<div class="inv" style="height:${invPct}%"></div><div class="gain" style="height:${100-invPct}%"></div></div>`;
+    }).join('');
+    $("acAxMid").textContent = "साल "+Math.ceil(N/2);
+    $("acAxEnd").textContent = "साल "+N+" · "+inr(bal);
+  }
+  calc();
 })();
 </script>
