@@ -96,6 +96,16 @@
   .band .cell.hl .big{color:var(--emerald);}
   @media(max-width:760px){.band{grid-template-columns:1fr;}}
 
+  .fdcompare{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:center;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;}
+  @media(max-width:720px){.fdcompare{grid-template-columns:1fr;}}
+  .fdchart{width:100%;}
+  .fdchart svg{width:100%;height:auto;display:block;}
+  .fdlegend{display:flex;flex-direction:column;gap:16px;}
+  .fdrow{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;}
+  .fddot{width:12px;height:12px;border-radius:3px;flex:none;margin-top:3px;}
+  .fdrow b{display:block;margin-bottom:2px;}
+  .fdrow span{color:var(--muted);font-size:13px;}
   table{width:100%;border-collapse:collapse;font-size:14.5px;}
   .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);}
   th,td{padding:12px 16px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;}
@@ -181,6 +191,13 @@
   #mixSum{font-weight:600;}
   #mixSum.bad{color:var(--crit);}
   .mixnote{color:var(--faint);font-size:12px;margin-left:6px;}
+  .solvebar{padding:12px 26px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .solvebtn{font:inherit;font-size:13px;font-weight:600;color:#fff;background:var(--emerald);border:none;
+    border-radius:10px;padding:8px 16px;cursor:pointer;}
+  .solvebtn:hover{filter:brightness(1.08);}
+  .solvebtn:active{transform:translateY(1px);}
+  .solvemsg{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .solvemsg b{color:var(--emerald);}
   .annuityline{padding:12px 26px;font-size:13.5px;background:var(--b1-bg);border-bottom:1px solid var(--line);color:var(--ink);}
   .annuityline b{color:var(--b1);}
   .annuityline span{color:var(--muted);}
@@ -331,7 +348,7 @@
 
     <div class="band">
       <div class="cell"><div class="lab">Deterministic floor</div><div class="big">₹1.79 Cr</div><div class="cap">Depletes to ₹0 at year 30 on a flawless 9% every year. Under Monte-Carlo it survives only ~20% of the time — a floor, not a plan.</div></div>
-      <div class="cell hl"><div class="lab">Monte-Carlo robust target</div><div class="big">₹2.50 Cr</div><div class="cap">~90%+ survival across 1,000 randomised return paths · R = 9%, σ = 6%, tax-adjusted. This is the number to actually build.</div></div>
+      <div class="cell hl"><div class="lab">Monte-Carlo robust target</div><div class="big">₹2.50 Cr</div><div class="cap">~90%+ survival across 1,000 randomised return paths · R ≈ 9% (the 40%-equity mix implies ~9.4%; sized conservatively), σ ≈ 6–7%, tax-adjusted. The number to actually build.</div></div>
       <div class="cell"><div class="lab">Plus safety reserve</div><div class="big">₹2.90 Cr</div><div class="cap">The ₹2.5 Cr income corpus + a ring-fenced ₹40 L for health &amp; emergencies (Bucket 4) = total capital to arrange.</div></div>
     </div>
     <div class="callout">
@@ -357,6 +374,17 @@
     <div class="callout" style="border-color:var(--steel);background:var(--steel-soft);">
       <b style="color:var(--steel)">A note on your stated inflation.</b> A 20% step-up every 5 years compounds to only <b>~3.7% p.a.</b>, below the 5–6% lifestyle inflation you mentioned. To genuinely hold 5–6%, the step-up must be ~28–34% every 5 years, which lifts the base corpus from ₹1.79 Cr to <b>₹2.02–2.22 Cr</b> (deplete-basis) — i.e. a ₹2.5 Cr planning target. The live calculator (§6) lets you dial the step-up and watch the corpus move.
     </div>
+
+    <h3 style="margin:40px 0 4px;font-size:19px;">Why not just put it all in FDs?</h3>
+    <p class="sub" style="margin-bottom:16px;">The most common instinct — "keep it safe in fixed deposits" — is the one that quietly fails. Same ₹2.5 Cr, same ₹1 L/month with 5-yearly step-ups, over 35 years.</p>
+    <div class="fdcompare">
+      <div class="fdchart"><svg id="fdSvg" viewBox="0 0 640 240" preserveAspectRatio="none" role="img" aria-label="Corpus over time: all-FD vs bucket strategy"></svg></div>
+      <div class="fdlegend">
+        <div class="fdrow"><span class="fddot" style="background:var(--crit)"></span><div><b>All-FD, ~6.5% after tax</b><span id="fdFailTxt">runs dry around year 34 — at age ~92, with no buffer left for a bad year or a longer life.</span></div></div>
+        <div class="fdrow"><span class="fddot" style="background:var(--b3)"></span><div><b>4-bucket mix, ~9.4%</b><span>never depletes across 35 years and leaves a large legacy (₹15 Cr+), because equity does the long-term heavy lifting.</span></div></div>
+      </div>
+    </div>
+    <div class="callout"><b>The point of the whole plan.</b> The ~3% return gap between "all safe" and "safe + growth" doesn't sound like much — but compounded across a 30-year retirement with rising withdrawals, it's the difference between <em>running out</em> and <em>never running out</em>. That is why Bucket 3 (equity) exists, and why you don't keep 100% in FDs.</div>
   </section>
 
   <!-- ======================= 2. BUCKETS ======================= -->
@@ -563,8 +591,8 @@
     <div class="calc">
       <p class="calctip">✎ <b>Type or drag.</b> Every box below is editable — click a number and type it, or drag the slider. Everything recalculates instantly. Nothing you do here is saved or sent anywhere.</p>
       <div class="controls">
-        <div class="ctrl"><label>Your total corpus <span class="valwrap">₹<input type="number" class="numin" id="C_n" min="100" max="500" step="5" value="250"><span class="u">L</span></span></label>
-          <input type="range" id="C" min="100" max="500" step="5" value="250"><div class="hint">All your own money — you fund the whole thing</div></div>
+        <div class="ctrl"><label>Your total corpus <span class="valwrap">₹<input type="number" class="numin" id="C_n" min="100" max="800" step="5" value="250"><span class="u">L</span></span></label>
+          <input type="range" id="C" min="100" max="800" step="5" value="250"><div class="hint">All your own money — you fund the whole thing</div></div>
         <div class="ctrl"><label>Held in parents' names <span class="valwrap">₹<input type="number" class="numin" id="P_n" min="0" max="180" step="5" value="60"><span class="u">L</span></span></label>
           <input type="range" id="P" min="0" max="180" step="5" value="60"><div class="hint">Part of the above, in parents' names for SCSS access — <b>not</b> extra money</div></div>
         <div class="ctrl annuity"><label>Annuity floor (guaranteed for life) <span class="valwrap">₹<input type="number" class="numin" id="A_n" min="0" max="120" step="5" value="0"><span class="u">L</span></span></label>
@@ -582,14 +610,16 @@
       </div>
 
       <div class="mixbox">
-        <div class="mix-h"><b>Bucket mix — your scenario.</b> Set the split; the calculator works out the blended return &amp; risk. <span class="mix-presets">Try: <button type="button" class="mixbtn" data-mix="50,30,20">Safe</button><button type="button" class="mixbtn" data-mix="32,28,40">Balanced</button><button type="button" class="mixbtn" data-mix="18,22,60">Aggressive</button></span></div>
+        <div class="mix-h"><b>Bucket mix — your scenario.</b> Set the split; the calculator works out the blended return &amp; risk. <span class="mix-presets">Try: <button type="button" class="mixbtn" data-mix="50,30,20">Safe</button><button type="button" class="mixbtn" data-mix="34,26,40">Balanced</button><button type="button" class="mixbtn" data-mix="18,22,60">Aggressive</button></span></div>
         <div class="mixrow">
-          <div class="mixcell"><span class="mixdot" style="background:var(--b1)"></span><label>Safe · Bucket 1</label><span class="valwrap"><input type="number" class="numin" id="bSafe" min="0" max="100" step="1" value="32"><span class="u">%</span></span><span class="mixr">earns ~7.5%</span></div>
-          <div class="mixcell"><span class="mixdot" style="background:var(--b2)"></span><label>Medium · Bucket 2</label><span class="valwrap"><input type="number" class="numin" id="bMed" min="0" max="100" step="1" value="28"><span class="u">%</span></span><span class="mixr">earns ~8.5%</span></div>
+          <div class="mixcell"><span class="mixdot" style="background:var(--b1)"></span><label>Safe · Bucket 1</label><span class="valwrap"><input type="number" class="numin" id="bSafe" min="0" max="100" step="1" value="34"><span class="u">%</span></span><span class="mixr">earns ~7.5%</span></div>
+          <div class="mixcell"><span class="mixdot" style="background:var(--b2)"></span><label>Medium · Bucket 2</label><span class="valwrap"><input type="number" class="numin" id="bMed" min="0" max="100" step="1" value="26"><span class="u">%</span></span><span class="mixr">earns ~8.5%</span></div>
           <div class="mixcell"><span class="mixdot" style="background:var(--b3)"></span><label>Growth · Bucket 3</label><span class="valwrap"><input type="number" class="numin" id="bGrowth" min="0" max="100" step="1" value="40"><span class="u">%</span></span><span class="mixr">earns ~11.5%</span></div>
         </div>
         <div class="mixfoot"><span id="mixSum">Total 100%</span> &nbsp;→&nbsp; blended return <b id="mixR">—</b> · market risk (σ) <b id="mixV">—</b> &nbsp;<span class="mixnote">more Growth = higher return but bumpier ride</span></div>
       </div>
+
+      <div class="solvebar"><button type="button" class="solvebtn" id="solveCorpus">🎯 Find the corpus for 90% success</button><span class="solvemsg" id="solveMsg"></span></div>
 
       <div class="corpline" id="corpline">Income corpus <b id="clTotal">—</b> &nbsp;·&nbsp; of which <span id="clPar">—</span> in parents' names &nbsp;·&nbsp; + reserve <span id="clRes">—</span> &nbsp;⟶&nbsp; total to arrange <b id="clCap">—</b></div>
       <div class="annuityline" id="annuityline" hidden>🛡️ Annuity floor: <b id="anMo">—</b>/month <span>guaranteed for life</span> — covers <b id="anPct">—</b> of year-1 income, and keeps paying even if the corpus runs out.</div>
@@ -683,8 +713,8 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
   <!-- ======================= 7. ACCUMULATION ======================= -->
   <section id="accum">
     <div class="sec-head"><span class="sec-num">07</span><h2>Accumulation Calculator — Building the Corpus</h2></div>
-    <div class="simple"><span class="ic">🟢</span><p><b>In simple terms:</b> The calculator above <em>spends</em> the money down. This one does the opposite — it shows how a monthly investment (an <span class="gloss" title="SIP = investing a fixed amount every month, usually into a mutual fund.">SIP</span>) and/or a one-time lump sum <em>grows</em> into that ₹2.5–2.9 crore <b>before</b> you retire. Change the numbers to see how big your pot becomes — and whether you're on track for the goal.</p></div>
-    <p class="sub">If you're still a few years from retirement, this is your build-the-corpus tool. It compounds a lump sum plus a monthly SIP (which you can step up each year) at an expected return, and charts the growth year by year.</p>
+    <div class="simple"><span class="ic">🟢</span><p><b>Who this is for:</b> Everything above is for the couple <em>retiring now</em> — deploying a corpus they already have. This section is the other side of the story, for <b>anyone in the family still building toward retirement</b> (your children, or younger relatives reading this). It shows how a monthly investment (an <span class="gloss" title="SIP = investing a fixed amount every month, usually into a mutual fund.">SIP</span>) and/or a lump sum <em>grows</em> into a ₹2.5–2.9 crore corpus over the years — the pot that Sections 1–6 then live off.</p></div>
+    <p class="sub">This is the build-the-corpus tool. It compounds a lump sum plus a monthly SIP (which you can step up each year) at an expected return, and charts the growth year by year — so a 40-year-old can see exactly what it takes to reach the same finish line.</p>
 
     <div class="calc">
       <p class="calctip">✎ <b>Type or drag.</b> Every box is editable. The <b>invested</b> part of each bar is what you put in; the lighter part on top is growth.</p>
@@ -702,6 +732,8 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
         <div class="ctrl"><label>Corpus goal <span class="valwrap">₹<input type="number" class="numin" id="acGoal_n" min="100" max="1000" step="10" value="290"><span class="u">L</span></span></label>
           <input type="range" id="acGoal" min="100" max="1000" step="10" value="290"><div class="hint">Your target (₹2.9 Cr from §1)</div></div>
       </div>
+
+      <div class="solvebar"><button type="button" class="solvebtn" id="solveSip">🎯 Find the monthly SIP for my goal</button><span class="solvemsg" id="solveSipMsg"></span></div>
 
       <div class="verdict">
         <div class="v"><span class="l">Corpus at retirement</span><span class="n" id="acCorpus">—</span></div>
@@ -1033,6 +1065,28 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
   }
   recompute();
 
+  // ---- "Solve for" : smallest corpus that clears a target success rate ----
+  function solveCorpus(target){
+    const I=val("I"), S=val("S")/100, T=val("T")/100, N=Math.round(val("N"));
+    const m=mixRV(), Araw=val("A")*1e5;
+    let lo=5e6, hi=1e9;
+    for(let i=0;i<26;i++){
+      const mid=(lo+hi)/2, A=Math.min(Araw,mid), draw=mid-A, annAnnual=A*ANNUITY_RATE;
+      const mc=monteCarlo(draw, annAnnual, I, S, T, N, m.R, m.vol, 2500);
+      if(mc.prob>=target) hi=mid; else lo=mid;
+    }
+    return hi;
+  }
+  const scBtn=$("solveCorpus");
+  if(scBtn) scBtn.addEventListener('click',()=>{
+    const C=solveCorpus(0.90), lakh=Math.ceil(C/1e5/5)*5, maxL=+$("C").max;
+    const clamped=Math.min(maxL, lakh);
+    $("C").value=clamped; $("C_n").value=clamped; recompute();
+    $("solveMsg").innerHTML = lakh>maxL
+      ? `≈ <b>₹${(lakh/100).toFixed(2)} Cr</b> needed — above the slider; set to max.`
+      : `≈ <b>₹${(clamped/100).toFixed(2)} Cr</b> gives ~90% success. ✓ set.`;
+  });
+
   // ---- Action-plan checklist: remember ticks on this device only ----
   const CK = "brb_checklist_v1";
   let saved = {};
@@ -1107,6 +1161,44 @@ Required corpus = smallest Ceff s.t. Bal(N) = 0 &nbsp;<span class="c">(bisection
     $("acAxMid").textContent = "yr "+Math.ceil(N/2);
     $("acAxEnd").textContent = "yr "+N+" · "+inr(bal);
   }
+
+  // ---- "Solve for" : monthly SIP that reaches the goal ----
+  function fv(sip0){ const lump=val("acLump")*1e5, step=val("acStep")/100, r=val("acR")/100, N=Math.round(val("acN")), rm=Math.pow(1+r,1/12)-1;
+    let bal=lump, sip=sip0; for(let y=1;y<=N;y++){ for(let m=0;m<12;m++){ bal=bal*(1+rm)+sip; } sip*=(1+step); } return bal; }
+  const ssBtn=$("solveSip");
+  if(ssBtn) ssBtn.addEventListener('click',()=>{
+    const goal=val("acGoal")*1e5, maxSip=+$("acSip").max, msgEl=$("solveSipMsg");
+    if(fv(0)>=goal){ msgEl.innerHTML="Your lump sum alone already reaches the goal — SIP not required."; return; }
+    if(fv(maxSip)<goal){ msgEl.innerHTML=`Even ₹${maxSip.toLocaleString('en-IN')}/mo falls short — add years or a lump sum.`; return; }
+    let lo=0, hi=maxSip; for(let i=0;i<40;i++){ const mid=(lo+hi)/2; if(fv(mid)>=goal) hi=mid; else lo=mid; }
+    const sip=Math.ceil(hi/1000)*1000;
+    $("acSip").value=sip; $("acSip_n").value=sip; calc();
+    msgEl.innerHTML=`A SIP of <b>₹${sip.toLocaleString('en-IN')}/month</b> reaches your goal. ✓ set.`;
+  });
+
   calc();
+})();
+
+// ---- "Why not just FDs?" comparison chart ----
+(function(){
+  const svg=document.getElementById('fdSvg'); if(!svg) return;
+  const W=640,H=240,pad=8, C=2.5e7,I=1e5,S=0.2,N=35;
+  function traj(R){ let bal=C; const pts=[bal]; let dep=null;
+    for(let y=1;y<=N;y++){ const w=I*12*Math.pow(1+S,Math.floor((y-1)/5)); bal-=w; if(bal<0&&dep===null)dep=y; bal=Math.max(bal,0)*(1+R); pts.push(Math.max(bal,0)); }
+    return {pts,dep}; }
+  const fd=traj(0.065), bk=traj(0.094), maxV=Math.max(...bk.pts,1);
+  const x=i=> pad + i/N*(W-2*pad), y=v=> H-pad - v/maxV*(H-2*pad);
+  const poly=pts=> pts.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  const grid=[0,maxV/2,maxV].map(v=>`<line x1="${pad}" y1="${y(v).toFixed(1)}" x2="${W-pad}" y2="${y(v).toFixed(1)}" style="stroke:var(--line)" stroke-width="1"/>`).join('');
+  let dep='';
+  if(fd.dep){ const dx=x(fd.dep).toFixed(1);
+    dep=`<line x1="${dx}" y1="${pad}" x2="${dx}" y2="${H-pad}" style="stroke:var(--crit)" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>`
+      + `<text x="${(+dx+5).toFixed(1)}" y="${pad+13}" style="fill:var(--crit)" font-size="11" font-family="monospace">runs dry ~yr ${fd.dep}</text>`; }
+  svg.innerHTML = grid
+    + `<polyline points="${poly(bk.pts)}" style="fill:none;stroke:var(--b3)" stroke-width="2.5" stroke-linejoin="round"/>`
+    + `<polyline points="${poly(fd.pts)}" style="fill:none;stroke:var(--crit)" stroke-width="2.5" stroke-linejoin="round"/>`
+    + dep
+    + `<text x="${pad}" y="${H-2}" style="fill:var(--faint)" font-size="10" font-family="monospace">now</text>`
+    + `<text x="${W-pad}" y="${H-2}" style="fill:var(--faint)" font-size="10" font-family="monospace" text-anchor="end">year ${N}</text>`;
 })();
 </script>

@@ -96,6 +96,16 @@
   .band .cell.hl .big{color:var(--emerald);}
   @media(max-width:760px){.band{grid-template-columns:1fr;}}
 
+  .fdcompare{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:center;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;}
+  @media(max-width:720px){.fdcompare{grid-template-columns:1fr;}}
+  .fdchart{width:100%;}
+  .fdchart svg{width:100%;height:auto;display:block;}
+  .fdlegend{display:flex;flex-direction:column;gap:16px;}
+  .fdrow{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;}
+  .fddot{width:12px;height:12px;border-radius:3px;flex:none;margin-top:3px;}
+  .fdrow b{display:block;margin-bottom:2px;}
+  .fdrow span{color:var(--muted);font-size:13px;}
   table{width:100%;border-collapse:collapse;font-size:14.5px;}
   .tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);}
   th,td{padding:12px 16px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;}
@@ -181,6 +191,13 @@
   #mixSum{font-weight:600;}
   #mixSum.bad{color:var(--crit);}
   .mixnote{color:var(--faint);font-size:12px;margin-left:6px;}
+  .solvebar{padding:12px 26px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .solvebtn{font:inherit;font-size:13px;font-weight:600;color:#fff;background:var(--emerald);border:none;
+    border-radius:10px;padding:8px 16px;cursor:pointer;}
+  .solvebtn:hover{filter:brightness(1.08);}
+  .solvebtn:active{transform:translateY(1px);}
+  .solvemsg{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .solvemsg b{color:var(--emerald);}
   .acchart .acbar{flex:1;display:flex;flex-direction:column-reverse;min-height:2px;border-radius:3px 3px 0 0;overflow:hidden;}
   .acchart .acbar .inv{background:var(--b2);}
   .acchart .acbar .gain{background:var(--b3);}
@@ -331,7 +348,7 @@
 
     <div class="band">
       <div class="cell"><div class="lab">निश्चित न्यूनतम</div><div class="big">₹1.79 Cr</div><div class="cap">अगर हर साल बिल्कुल सही 9% मिले तो 30वें साल ₹0 पर खत्म। Monte-Carlo (मॉन्टे-कार्लो) में यह सिर्फ ~20% बार टिकता है — यह न्यूनतम है, प्लान नहीं।</div></div>
-      <div class="cell hl"><div class="lab">Monte-Carlo (मॉन्टे-कार्लो) मज़बूत लक्ष्य</div><div class="big">₹2.50 Cr</div><div class="cap">1,000 बेतरतीब रिटर्न रास्तों में ~90%+ टिकाव · R = 9%, σ = 6%, टैक्स-समायोजित। असल में यही आँकड़ा बनाना है।</div></div>
+      <div class="cell hl"><div class="lab">Monte-Carlo (मॉन्टे-कार्लो) मज़बूत लक्ष्य</div><div class="big">₹2.50 Cr</div><div class="cap">1,000 बेतरतीब रिटर्न रास्तों में ~90%+ टिकाव · R ≈ 9% (40%-इक्विटी मिश्रण से ~9.4% बनता है; सुरक्षित रखते हुए), σ ≈ 6–7%, टैक्स-समायोजित। असल में यही आँकड़ा बनाना है।</div></div>
       <div class="cell"><div class="lab">साथ में सुरक्षा रिज़र्व</div><div class="big">₹2.90 Cr</div><div class="cap">₹2.5 करोड़ आमदनी रकम + सेहत व आपातकाल के लिए अलग रखे ₹40 लाख (बकेट 4) = जुटाने वाली कुल पूँजी।</div></div>
     </div>
     <div class="callout">
@@ -357,6 +374,17 @@
     <div class="callout" style="border-color:var(--steel);background:var(--steel-soft);">
       <b style="color:var(--steel)">आपने जो महँगाई बताई, उस पर एक बात।</b> हर 5 साल पर 20% बढ़ोतरी मिलाकर सिर्फ <b>~3.7% सालाना</b> बनती है, जो आपकी बताई 5–6% जीवनशैली महँगाई से कम है। सच में 5–6% बनाए रखने के लिए बढ़ोतरी हर 5 साल पर ~28–34% होनी चाहिए, जिससे आधार रकम ₹1.79 करोड़ से बढ़कर <b>₹2.02–2.22 करोड़</b> (खत्म-आधार पर) हो जाती है — यानी ₹2.5 करोड़ का प्लानिंग लक्ष्य। लाइव कैलकुलेटर (§6) में आप बढ़ोतरी घटा-बढ़ा कर देख सकते हैं कि रकम कैसे बदलती है।
     </div>
+
+    <h3 style="margin:40px 0 4px;font-size:19px;">सिर्फ FD में क्यों न रखें?</h3>
+    <p class="sub" style="margin-bottom:16px;">सबसे आम सोच — "पैसा FD में सुरक्षित रखो" — वही चुपचाप नाकाम होती है। वही ₹2.5 करोड़, वही ₹1 लाख/महीना 5-साला बढ़ोतरी के साथ, 35 साल तक।</p>
+    <div class="fdcompare">
+      <div class="fdchart"><svg id="fdSvg" viewBox="0 0 640 240" preserveAspectRatio="none" role="img" aria-label="समय के साथ पूँजी: सिर्फ-FD बनाम बकेट रणनीति"></svg></div>
+      <div class="fdlegend">
+        <div class="fdrow"><span class="fddot" style="background:var(--crit)"></span><div><b>सिर्फ FD, टैक्स के बाद ~6.5%</b><span>करीब साल 34 में खत्म हो जाती है — उम्र ~92 पर, खराब साल या लंबी उम्र के लिए कोई बफ़र नहीं बचता।</span></div></div>
+        <div class="fdrow"><span class="fddot" style="background:var(--b3)"></span><div><b>4-बकेट मिश्रण, ~9.4%</b><span>35 साल में कभी खत्म नहीं होती और बड़ी विरासत (₹15 करोड़+) छोड़ती है, क्योंकि इक्विटी लंबी अवधि का भारी काम करती है।</span></div></div>
+      </div>
+    </div>
+    <div class="callout"><b>पूरे प्लान का मूल यही है।</b> "पूरा सुरक्षित" और "सुरक्षित + ग्रोथ" के बीच का ~3% रिटर्न फ़र्क छोटा लगता है — पर 30 साल की रिटायरमेंट में बढ़ती निकासी के साथ मिलकर, यही <em>पैसा खत्म होने</em> और <em>कभी खत्म न होने</em> का फ़र्क है। इसीलिए बकेट 3 (इक्विटी) मौजूद है, और इसीलिए आप 100% FD में नहीं रखते।</div>
   </section>
 
   <!-- ======================= 2. BUCKETS ======================= -->
@@ -563,8 +591,8 @@
     <div class="calc">
       <p class="calctip">✎ <b>टाइप करें या खींचें।</b> नीचे का हर बॉक्स बदला जा सकता है — किसी नंबर पर क्लिक करके टाइप करें, या स्लाइडर खींचें। सब कुछ तुरंत दोबारा गणना होता है। यहाँ आप जो करते हैं वह कहीं सेव या भेजा नहीं जाता।</p>
       <div class="controls">
-        <div class="ctrl"><label>आपकी कुल पूँजी <span class="valwrap">₹<input type="number" class="numin" id="C_n" min="100" max="500" step="5" value="250"><span class="u">L</span></span></label>
-          <input type="range" id="C" min="100" max="500" step="5" value="250"><div class="hint">पूरी आपकी अपनी रकम — पूरा आप ही जुटाते हैं</div></div>
+        <div class="ctrl"><label>आपकी कुल पूँजी <span class="valwrap">₹<input type="number" class="numin" id="C_n" min="100" max="800" step="5" value="250"><span class="u">L</span></span></label>
+          <input type="range" id="C" min="100" max="800" step="5" value="250"><div class="hint">पूरी आपकी अपनी रकम — पूरा आप ही जुटाते हैं</div></div>
         <div class="ctrl"><label>माता-पिता के नाम पर रखा <span class="valwrap">₹<input type="number" class="numin" id="P_n" min="0" max="180" step="5" value="60"><span class="u">L</span></span></label>
           <input type="range" id="P" min="0" max="180" step="5" value="60"><div class="hint">ऊपर वाली रकम का हिस्सा, SCSS के लिए माता-पिता के नाम पर — <b>अलग से पैसा नहीं</b></div></div>
         <div class="ctrl annuity"><label>एन्युटी न्यूनतम (जीवनभर पक्का) <span class="valwrap">₹<input type="number" class="numin" id="A_n" min="0" max="120" step="5" value="0"><span class="u">L</span></span></label>
@@ -582,14 +610,16 @@
       </div>
 
       <div class="mixbox">
-        <div class="mix-h"><b>बकेट मिश्रण — आपकी स्थिति।</b> बँटवारा तय करें; कैलकुलेटर मिला-जुला रिटर्न और जोखिम निकाल देगा। <span class="mix-presets">आज़माएँ: <button type="button" class="mixbtn" data-mix="50,30,20">सुरक्षित</button><button type="button" class="mixbtn" data-mix="32,28,40">संतुलित</button><button type="button" class="mixbtn" data-mix="18,22,60">आक्रामक</button></span></div>
+        <div class="mix-h"><b>बकेट मिश्रण — आपकी स्थिति।</b> बँटवारा तय करें; कैलकुलेटर मिला-जुला रिटर्न और जोखिम निकाल देगा। <span class="mix-presets">आज़माएँ: <button type="button" class="mixbtn" data-mix="50,30,20">सुरक्षित</button><button type="button" class="mixbtn" data-mix="34,26,40">संतुलित</button><button type="button" class="mixbtn" data-mix="18,22,60">आक्रामक</button></span></div>
         <div class="mixrow">
-          <div class="mixcell"><span class="mixdot" style="background:var(--b1)"></span><label>सुरक्षित · बकेट 1</label><span class="valwrap"><input type="number" class="numin" id="bSafe" min="0" max="100" step="1" value="32"><span class="u">%</span></span><span class="mixr">~7.5% कमाता</span></div>
-          <div class="mixcell"><span class="mixdot" style="background:var(--b2)"></span><label>मध्यम · बकेट 2</label><span class="valwrap"><input type="number" class="numin" id="bMed" min="0" max="100" step="1" value="28"><span class="u">%</span></span><span class="mixr">~8.5% कमाता</span></div>
+          <div class="mixcell"><span class="mixdot" style="background:var(--b1)"></span><label>सुरक्षित · बकेट 1</label><span class="valwrap"><input type="number" class="numin" id="bSafe" min="0" max="100" step="1" value="34"><span class="u">%</span></span><span class="mixr">~7.5% कमाता</span></div>
+          <div class="mixcell"><span class="mixdot" style="background:var(--b2)"></span><label>मध्यम · बकेट 2</label><span class="valwrap"><input type="number" class="numin" id="bMed" min="0" max="100" step="1" value="26"><span class="u">%</span></span><span class="mixr">~8.5% कमाता</span></div>
           <div class="mixcell"><span class="mixdot" style="background:var(--b3)"></span><label>ग्रोथ · बकेट 3</label><span class="valwrap"><input type="number" class="numin" id="bGrowth" min="0" max="100" step="1" value="40"><span class="u">%</span></span><span class="mixr">~11.5% कमाता</span></div>
         </div>
         <div class="mixfoot"><span id="mixSum">कुल 100%</span> &nbsp;→&nbsp; मिला-जुला रिटर्न <b id="mixR">—</b> · बाज़ार जोखिम (σ) <b id="mixV">—</b> &nbsp;<span class="mixnote">ज़्यादा ग्रोथ = ज़्यादा रिटर्न पर ज़्यादा उतार-चढ़ाव</span></div>
       </div>
+
+      <div class="solvebar"><button type="button" class="solvebtn" id="solveCorpus">🎯 90% सफलता के लिए ज़रूरी पूँजी खोजें</button><span class="solvemsg" id="solveMsg"></span></div>
 
       <div class="corpline" id="corpline">आमदनी रकम <b id="clTotal">—</b> &nbsp;·&nbsp; जिसमें से <span id="clPar">—</span> माता-पिता के नाम पर &nbsp;·&nbsp; + रिज़र्व <span id="clRes">—</span> &nbsp;⟶&nbsp; जुटाने वाली कुल <b id="clCap">—</b></div>
       <div class="annuityline" id="annuityline" hidden>🛡️ एन्युटी न्यूनतम: <b id="anMo">—</b>/महीना <span>जीवनभर पक्का</span> — पहले साल की आमदनी का <b id="anPct">—</b> ढकता है, और रकम खत्म होने पर भी देता रहता है।</div>
@@ -683,8 +713,8 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
   <!-- ======================= 7. ACCUMULATION ======================= -->
   <section id="accum">
     <div class="sec-head"><span class="sec-num">07</span><h2>संचय कैलकुलेटर — पूँजी बनाना</h2></div>
-    <div class="simple"><span class="ic">🟢</span><p><b>आसान शब्दों में:</b> ऊपर वाला कैलकुलेटर पैसे को <em>खर्च</em> करता है। यह उल्टा काम करता है — दिखाता है कि हर महीने का निवेश (<span class="gloss" title="SIP = हर महीने एक तय रकम, आमतौर पर म्यूचुअल फंड में निवेश करना।">SIP</span>) और/या एकमुश्त रकम रिटायरमेंट से <b>पहले</b> कैसे उस ₹2.5–2.9 करोड़ में बढ़ती है। आँकड़े बदलकर देखें कि आपकी रकम कितनी बड़ी होती है — और आप लक्ष्य की राह पर हैं या नहीं।</p></div>
-    <p class="sub">अगर रिटायरमेंट में अभी कुछ साल बाकी हैं, तो यह आपका पूँजी-बनाने का औज़ार है। यह एकमुश्त रकम और मासिक SIP (जिसे हर साल बढ़ा सकते हैं) को एक अपेक्षित रिटर्न पर बढ़ाता है, और साल-दर-साल ग्रोथ दिखाता है।</p>
+    <div class="simple"><span class="ic">🟢</span><p><b>यह किसके लिए है:</b> ऊपर का सब कुछ <em>अभी रिटायर हो रहे</em> दंपती के लिए है — जो पहले से मौजूद पूँजी लगा रहे हैं। यह हिस्सा कहानी का दूसरा पहलू है, <b>परिवार के उन लोगों के लिए जो अभी रिटायरमेंट की पूँजी बना रहे हैं</b> (आपके बच्चे या छोटे सदस्य जो इसे पढ़ रहे हैं)। यह दिखाता है कि हर महीने का निवेश (<span class="gloss" title="SIP = हर महीने एक तय रकम, आमतौर पर म्यूचुअल फंड में निवेश करना।">SIP</span>) और/या एकमुश्त रकम सालों में कैसे ₹2.5–2.9 करोड़ की पूँजी में बढ़ती है — वही पूँजी जिस पर सेक्शन 1–6 चलते हैं।</p></div>
+    <p class="sub">यह पूँजी-बनाने का औज़ार है। यह एकमुश्त रकम और मासिक SIP (जिसे हर साल बढ़ा सकते हैं) को एक अपेक्षित रिटर्न पर बढ़ाता है, और साल-दर-साल ग्रोथ दिखाता है — ताकि एक 40 साल का व्यक्ति ठीक-ठीक देख सके कि उसी मंज़िल तक पहुँचने में क्या लगेगा।</p>
 
     <div class="calc">
       <p class="calctip">✎ <b>टाइप करें या खींचें।</b> हर बॉक्स एडिट हो सकता है। हर बार का <b>निवेश</b> हिस्सा वह है जो आपने डाला; ऊपर का हल्का हिस्सा ग्रोथ है।</p>
@@ -702,6 +732,8 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
         <div class="ctrl"><label>पूँजी लक्ष्य <span class="valwrap">₹<input type="number" class="numin" id="acGoal_n" min="100" max="1000" step="10" value="290"><span class="u">L</span></span></label>
           <input type="range" id="acGoal" min="100" max="1000" step="10" value="290"><div class="hint">आपका लक्ष्य (§1 से ₹2.9 करोड़)</div></div>
       </div>
+
+      <div class="solvebar"><button type="button" class="solvebtn" id="solveSip">🎯 लक्ष्य के लिए ज़रूरी मासिक SIP खोजें</button><span class="solvemsg" id="solveSipMsg"></span></div>
 
       <div class="verdict">
         <div class="v"><span class="l">रिटायरमेंट पर पूँजी</span><span class="n" id="acCorpus">—</span></div>
@@ -1033,6 +1065,28 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
   }
   recompute();
 
+  // ---- "Solve for" : smallest corpus that clears a target success rate ----
+  function solveCorpus(target){
+    const I=val("I"), S=val("S")/100, T=val("T")/100, N=Math.round(val("N"));
+    const m=mixRV(), Araw=val("A")*1e5;
+    let lo=5e6, hi=1e9;
+    for(let i=0;i<26;i++){
+      const mid=(lo+hi)/2, A=Math.min(Araw,mid), draw=mid-A, annAnnual=A*ANNUITY_RATE;
+      const mc=monteCarlo(draw, annAnnual, I, S, T, N, m.R, m.vol, 2500);
+      if(mc.prob>=target) hi=mid; else lo=mid;
+    }
+    return hi;
+  }
+  const scBtn=$("solveCorpus");
+  if(scBtn) scBtn.addEventListener('click',()=>{
+    const C=solveCorpus(0.90), lakh=Math.ceil(C/1e5/5)*5, maxL=+$("C").max;
+    const clamped=Math.min(maxL, lakh);
+    $("C").value=clamped; $("C_n").value=clamped; recompute();
+    $("solveMsg").innerHTML = lakh>maxL
+      ? `≈ <b>₹${(lakh/100).toFixed(2)} करोड़</b> चाहिए — स्लाइडर से ज़्यादा; अधिकतम पर सेट।`
+      : `≈ <b>₹${(clamped/100).toFixed(2)} करोड़</b> से ~90% सफलता। ✓ सेट।`;
+  });
+
   // ---- Action-plan checklist: remember ticks on this device only ----
   const CK = "brb_checklist_v1";
   let saved = {};
@@ -1106,6 +1160,43 @@ r&#95;y &nbsp;&nbsp;&nbsp;= R + &sigma; × <span class="g">randn()</span> &nbsp;
     $("acAxMid").textContent = "साल "+Math.ceil(N/2);
     $("acAxEnd").textContent = "साल "+N+" · "+inr(bal);
   }
+  // ---- "Solve for" : monthly SIP that reaches the goal ----
+  function fv(sip0){ const lump=val("acLump")*1e5, step=val("acStep")/100, r=val("acR")/100, N=Math.round(val("acN")), rm=Math.pow(1+r,1/12)-1;
+    let bal=lump, sip=sip0; for(let y=1;y<=N;y++){ for(let m=0;m<12;m++){ bal=bal*(1+rm)+sip; } sip*=(1+step); } return bal; }
+  const ssBtn=$("solveSip");
+  if(ssBtn) ssBtn.addEventListener('click',()=>{
+    const goal=val("acGoal")*1e5, maxSip=+$("acSip").max, msgEl=$("solveSipMsg");
+    if(fv(0)>=goal){ msgEl.innerHTML="सिर्फ़ आपकी एकमुश्त रकम ही लक्ष्य तक पहुँच जाती है — SIP ज़रूरी नहीं।"; return; }
+    if(fv(maxSip)<goal){ msgEl.innerHTML=`₹${maxSip.toLocaleString('en-IN')}/माह भी कम पड़ता है — ज़्यादा साल या एकमुश्त रकम जोड़ें।`; return; }
+    let lo=0, hi=maxSip; for(let i=0;i<40;i++){ const mid=(lo+hi)/2; if(fv(mid)>=goal) hi=mid; else lo=mid; }
+    const sip=Math.ceil(hi/1000)*1000;
+    $("acSip").value=sip; $("acSip_n").value=sip; calc();
+    msgEl.innerHTML=`<b>₹${sip.toLocaleString('en-IN')}/माह</b> की SIP लक्ष्य तक पहुँचती है। ✓ सेट।`;
+  });
+
   calc();
+})();
+
+// ---- "सिर्फ FD में क्यों न रखें?" तुलना चार्ट ----
+(function(){
+  const svg=document.getElementById('fdSvg'); if(!svg) return;
+  const W=640,H=240,pad=8, C=2.5e7,I=1e5,S=0.2,N=35;
+  function traj(R){ let bal=C; const pts=[bal]; let dep=null;
+    for(let y=1;y<=N;y++){ const w=I*12*Math.pow(1+S,Math.floor((y-1)/5)); bal-=w; if(bal<0&&dep===null)dep=y; bal=Math.max(bal,0)*(1+R); pts.push(Math.max(bal,0)); }
+    return {pts,dep}; }
+  const fd=traj(0.065), bk=traj(0.094), maxV=Math.max(...bk.pts,1);
+  const x=i=> pad + i/N*(W-2*pad), y=v=> H-pad - v/maxV*(H-2*pad);
+  const poly=pts=> pts.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  const grid=[0,maxV/2,maxV].map(v=>`<line x1="${pad}" y1="${y(v).toFixed(1)}" x2="${W-pad}" y2="${y(v).toFixed(1)}" style="stroke:var(--line)" stroke-width="1"/>`).join('');
+  let dep='';
+  if(fd.dep){ const dx=x(fd.dep).toFixed(1);
+    dep=`<line x1="${dx}" y1="${pad}" x2="${dx}" y2="${H-pad}" style="stroke:var(--crit)" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>`
+      + `<text x="${(+dx+5).toFixed(1)}" y="${pad+13}" style="fill:var(--crit)" font-size="11" font-family="monospace">साल ~${fd.dep} में खत्म</text>`; }
+  svg.innerHTML = grid
+    + `<polyline points="${poly(bk.pts)}" style="fill:none;stroke:var(--b3)" stroke-width="2.5" stroke-linejoin="round"/>`
+    + `<polyline points="${poly(fd.pts)}" style="fill:none;stroke:var(--crit)" stroke-width="2.5" stroke-linejoin="round"/>`
+    + dep
+    + `<text x="${pad}" y="${H-2}" style="fill:var(--faint)" font-size="10" font-family="monospace">अभी</text>`
+    + `<text x="${W-pad}" y="${H-2}" style="fill:var(--faint)" font-size="10" font-family="monospace" text-anchor="end">साल ${N}</text>`;
 })();
 </script>
